@@ -4,5 +4,10 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable, :recoverable, :validatable,
          :jwt_authenticatable, jwt_revocation_strategy: Devise::JWT::RevocationStrategies::Null
 
+  has_one :settings, class_name: "UserSetting"
+
   has_many :time_entries
+  
+
+  validates :email, :presence => true
 end

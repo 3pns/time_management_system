@@ -28,6 +28,8 @@ gem 'active_model_serializers', '~> 0.10.10'
 gem 'oj', '~> 3.7.12'
 gem 'devise'
 gem 'devise-jwt', '~> 0.6.0'
+gem 'kaminari'
+gem 'validates_timeliness'
 # gem 'pundit'
 # gem 'recaptcha' # for user account create
 
@@ -36,7 +38,13 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'rspec-rails'
+  gem 'factory_bot_rails'
+  gem 'simplecov'
+  gem 'shoulda'
+  gem 'shoulda-matchers'
+
   gem 'bundler-audit'
+
 end
 
 group :development do
