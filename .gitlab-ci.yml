@@ -1,0 +1,151 @@
+# See how variables work, and a list of predefined ones:
+#  - https://docs.gitlab.com/ce/ci/variables/
+# https://gitlab.com/gitlab-org/gitlab-runner/issues/2677
+#   https://docs.gitlab.com/ce/ci/docker/using_docker_build.html#using-the-gitlab-container-registry
+#   https://gist.github.com/jorge07/63b993e8f934012a5abb6b55cc702c75
+
+# We a "docker-in-docker" image, to run docker on CI like we do in dev. See:
+#  - https://docs.gitlab.com/ce/ci/docker/using_docker_build.html#use-docker-in-docker-executor
+#  - http://stackoverflow.com/a/40387216/1154642
+# build using mono threaded runner on build only vm for security purposes
+# https://github.com/moby/moby/issues/9656
+# https://docs.gitlab.com/runner/executors/kubernetes.html#using-docker-in-your-builds
+# access services via localhost on kubernetes executor and service_name in docker executor
+
+image: docker:stable
+services:
+- docker:19.03.8-dind
+
+variables:
+  RAILS_IMAGE: $GITLAB_REGISTRY_URL/hydrodigit/toptal_time_management_system:0.0.1.$CI_PIPELINE_IID
+#  RAILS_LATEST_IMAGE: $GITLAB_REGISTRY_URL/hydrodigit/toptal_time_management_system:latest
+  PROD_CURRENT: 3pns/toptal_time_management_system:0.0.1.$CI_PIPELINE_IID
+#  PROD_LATEST: 3pns/toptal_time_management_system:latest
+  DEPLOY_TAG: $CI_PIPELINE_IID
+  DOCKER_HOST: tcp://docker:2375/
+  DOCKER_DRIVER: overlay2
+  RAILS_ENV: production
+  GIT_STRATEGY: fetch
+  BUNDLE_APP_CONFIG: vendor/bundle
+  BUNDLE_PATH: vendor/bundle
+  GEM_HOME: vendor/bundle
+  BUNDLER_VERSION: 2.1.4
+
+before_script:
+  - ls -al
+  - du -sh *
+  - whoami
+  - docker version
+  - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $GITLAB_REGISTRY_URL
+  - touch .env
+
+cache:
+  paths:
+  - vendor/bundle
+  - vendor/assets
+  - node_modules
+  - public/assets
+  - public/packs
+
+stages:
+  - prebuild
+  - build
+  - test
+  - release
+
+prebuild:
+  stage: prebuild
+  tags:
+    - build
+  image: ruby:2.6.6-alpine3.11
+  before_script:
+  - ls -al
+  - du -sh *
+  - whoami
+  - touch .env
+  - bundle -v
+  script:
+    - apk update
+    - apk add -qq && apk add alpine-sdk build-base libxml2-dev libxml2-dev postgresql-dev nodejs yarn tzdata libcurl
+    - gem install bundler
+    - bundle install --jobs $(nproc)
+    - bundle clean --force 
+  only:
+    - master
+    - tags
+
+build:
+  stage: build
+  tags:
+    - build
+  script:
+#    - docker pull $RAILS_LATEST_IMAGE
+#    - docker build --cache-from $RAILS_LATEST_IMAGE -t $RAILS_IMAGE .
+    - docker build -t $RAILS_IMAGE .
+    - docker push $RAILS_IMAGE
+  only:
+    - master
+    - tags
+
+test:
+  stage: test
+  tags:
+    - test
+  image: $RAILS_IMAGE
+  services:
+    - docker:stable-dind
+    - postgres:10.4
+  artifacts:
+    paths:
+      - public/
+    expire_in: 12 hrs
+  variables:
+    DOCKER_HOST: tcp://docker:2375/
+    DOCKER_DRIVER: overlay2
+    RAILS_ENV: test
+    POSTGRES_HOST: postgres
+    POSTGRES_DB: api_auth_test
+    POSTGRES_USER: api_auth_test
+    POSTGRES_PASSWORD: 'mysecretpassword'
+    BUNDLE_APP_CONFIG: vendor/bundle
+    BUNDLE_PATH: vendor/bundle
+    GEM_HOME: vendor/bundle
+  before_script:
+    - touch .env
+  script:
+    - ls -al
+    - apk update
+    - apk add -qq && apk add alpine-sdk build-base libxml2-dev libxml2-dev postgresql-dev nodejs yarn tzdata libcurl
+    - bundle install --jobs $(nproc)
+    - rake db:test:prepare
+    - rake spec
+  artifacts:
+    paths:
+      - master
+      - coverage/
+  only:
+    - master
+    - tags
+
+pages:
+  stage: release
+  tags:
+    - pages
+  dependencies:
+    - test
+  before_script:
+    - ls -al
+  script:
+    - ls -al
+    - rm -rf public
+    - mkdir public
+    - mv coverage/* public
+    - rm -rf coverage
+  artifacts:
+    paths:
+      - public
+    expire_in: 30 days
+  cache: {}
+  only:
+    - master
+    - tags

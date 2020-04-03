@@ -22,3 +22,10 @@ Things you may want to cover:
 * Deployment instructions
 
 * ...
+
+# Deployment
+
+## Environment variables required by the Docker image
+
+DEVISE_JWT_SECRET_KEY
+MAILER_DEVISE_SENDER

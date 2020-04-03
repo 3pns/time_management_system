@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '2.6.5'
+ruby '2.6.6'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 6.0.2', '>= 6.0.2.2'
@@ -27,7 +27,7 @@ gem 'rack-cors'
 gem 'active_model_serializers', '~> 0.10.10'
 gem 'oj', '~> 3.7.12'
 gem 'devise'
-# gem 'devise-jwt', '~> 0.6.0'
+gem 'devise-jwt', '~> 0.6.0'
 # gem 'pundit'
 # gem 'recaptcha' # for user account create
 
