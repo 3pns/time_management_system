@@ -6,6 +6,7 @@ RSpec.describe TimeEntry, type: :model do
   it { should validate_presence_of(:user) }
   it { should validate_presence_of(:date) }
   it { should validate_presence_of(:duration) }
+  it { should validate_length_of(:note).is_at_most(255) }
 end
 
 RSpec.describe TimeEntry, "max duration", type: :model do
