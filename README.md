@@ -23,6 +23,26 @@ Things you may want to cover:
 
 * ...
 
+# Code Conventions
+
+# successful queries
+
+
+POST/PUT/PATCH : must return the updated object
+
+
+# queries with errors
+
+Must follow the pattern below :
+
+{
+    "errors": {
+        "field_name_or_error_name": [
+            "error_message"
+        ]
+    }
+}
+
 # Deployment
 
 ## Environment variables required by the Docker image

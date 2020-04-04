@@ -28,7 +28,8 @@ gem 'active_model_serializers', '~> 0.10.10'
 gem 'oj', '~> 3.7.12'
 gem 'devise'
 gem 'devise-jwt', '~> 0.6.0'
-gem 'kaminari'
+gem 'pagy', '~> 3.7.5'
+gem 'ransack'
 gem 'validates_timeliness'
 # gem 'pundit'
 # gem 'recaptcha' # for user account create
@@ -51,8 +52,8 @@ group :development do
   gem 'listen', '>= 3.0.5', '< 3.2'
   gem 'rails-erd'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-  gem 'spring'
-  gem 'spring-watcher-listen', '~> 2.0.0'
+  # gem 'spring'
+  # gem 'spring-watcher-listen', '~> 2.0.0'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
