@@ -1,0 +1,6 @@
+{
+  "name": "TimeEntries",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./TimeEntries.js"
+}

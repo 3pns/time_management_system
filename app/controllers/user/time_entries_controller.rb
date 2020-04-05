@@ -2,7 +2,6 @@ class User::TimeEntriesController < User::UserController
   before_action :find_time_entry, :only => [:show, :edit, :update, :destroy]
 
   # TODO add role base filtering with pundit
-  # disable pagination for allowing proper html export
   def index
     @disable_pagination = params[:disable_pagination]
     @q = TimeEntry.ransack(params[:q])

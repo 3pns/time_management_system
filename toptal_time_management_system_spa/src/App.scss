@@ -1,0 +1,54 @@
+// Styles
+// CoreUI Main Style
+@import '~@coreui/coreui/scss/coreui';
+// CoreUI Icons Set
+@import '~@coreui/icons/scss/coreui-icons';
+// Import Flag Icons Set
+@import '~flag-icon-css/sass/flag-icon.scss';
+// Import Font Awesome Icons Set
+//@import '~@fortawesome/fontawesome-free/scss/fontawesome.scss';
+@import '~font-awesome/scss/font-awesome.scss';
+// Import Simple Line Icons Set
+@import '~simple-line-icons/scss/simple-line-icons.scss';
+// Import Main styles for this application
+@import './scss/style.scss';
+
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-float infinite 3s ease-in-out;
+  }
+}
+
+.App-header {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+}
+
+.App-link {
+  color: rgb(112, 76, 182);
+}
+
+@keyframes App-logo-float {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(10px)
+  }
+  100% {
+    transform: translateY(0px)
+  }
+}
