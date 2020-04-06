@@ -22,17 +22,27 @@ const Page500 = React.lazy(() => import('./views/Pages/Page500'));
 const anonymous_user_allowed_paths = ['/login', '/register']
 
 class App extends Component {
+  constructor(props) {
+   super(props)
+    // call if loading data from local storage at refresh, exmple JWT
+    // store.dispatch({type: INIT_PROJECT, payload: {sku: ""}});
+    if(localStorage.getItem('access-token') == null){
+      localStorage.setItem('access-token', '')
+    }
+  }
 
   render() {
-    let isAuthenticated = this.props.profile != null ? true : false
+    console.log("TEST AUTH")
+    console.log(localStorage.getItem('access-token'))
+    let isAuthenticated = localStorage.getItem('access-token') ? true : false
 
     console.log(isAuthenticated)
     console.log(this.props.profile.authenticated)
 
-    if(!this.props.profile.authenticated && !anonymous_user_allowed_paths.includes(this.props.location.pathname)) {
+    if(!isAuthenticated && !anonymous_user_allowed_paths.includes(this.props.location.pathname)) {
       return <Redirect to='/login' />
-    } else if (this.props.profile.authenticated && anonymous_user_allowed_paths.includes(this.props.location.pathname) ){
-      return <Redirect to='/' />
+    } else if (isAuthenticated && anonymous_user_allowed_paths.includes(this.props.location.pathname) ){
+      return <Redirect to='/dashboard' />
     }
     return (
         <React.Suspense fallback={loading()}>

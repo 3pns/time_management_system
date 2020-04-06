@@ -2,7 +2,7 @@ import actions from 'actions'
 
 export const profile = (profile = {authenticated: false}, action) => {
   switch (action.type) {
-    case actions.profile.UPDATE:
+    case actions.profile.types.UPDATE:
       if(action.payload.profile != null && action.payload.profile.id != null){
         profile = action.payload.profile
         profile.authenticated = true

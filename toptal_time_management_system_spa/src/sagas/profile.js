@@ -25,10 +25,10 @@ class Profile {
      try {
         const profile = yield call(api.profile.login, action.payload );
         if (profile != null){
+          profile.authenticated = true
           yield put({type: actions.profile.types.UPDATE, payload: { profile: profile} });
           yield put({type: SHOW_BOOTSTRAP_REDUX_ALERT, payload: { message: "Sign in with success", color: "success", visible: true }});
         } else {
-          console.log(profile)
           yield put({type: SHOW_BOOTSTRAP_REDUX_ALERT, payload: { message: "Error while sign in", color: "danger", visible: true }});
         }
      } catch (e) {
@@ -37,7 +37,7 @@ class Profile {
   }
 
   static * logout(action) {
-    yield put({type: actions.profile.types.UPDATE, payload: { profile: {}} });
+    yield put({type: actions.profile.types.UPDATE, payload: { profile: {authenticated: false}} });
      // try { 
      //    const profile = yield call(api.profile.logout, action.payload);
      //    if (profile != null){

@@ -4,8 +4,32 @@ import { Button, Card, CardBody, CardGroup, Col, Container /*, Form*/, Input, In
 import { Formik, Field, Form/*, ErrorMessage*/ } from 'formik';
 import * as yup from 'yup';
 import BootstrapReduxAlert from 'components/BootstrapReduxAlert'
+import actions from 'actions';
+import api from 'services/api';
+import store from 'store'
 
 class Login extends Component {
+
+  login = (values, { setSubmitting, errors, setErrors }) => {
+    setTimeout(() => {
+      setSubmitting(false);
+    }, 2000);
+
+    try {
+      console.log(values)
+      api.profile.login({data:{user: values}})
+      .then(response => {
+        if(response != null && response.error == "Invalid Email or password."){
+            setErrors({email: "Invalid Email or password.", password: "Invalid Email or password."})
+        } else if (response != null && response.id != null) {
+          store.dispatch({type: actions.profile.types.UPDATE, payload: { profile: response} });
+        }
+      })
+    } catch(e) {
+      console.log(e)
+      setErrors(e)
+    }
+  }
 
   render() {
     return (
@@ -40,7 +64,7 @@ class Login extends Component {
                             .ensure(),
                         })}
 
-                        onSubmit={this.props.submit}
+                        onSubmit={this.login}
                       >
                         {({ isSubmitting, errors, touched }) => (
                           <Form>

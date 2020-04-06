@@ -7,6 +7,7 @@ import ReCAPTCHA from "react-google-recaptcha";
 import api from 'services/api'
 import actions from 'actions'
 import store from 'store'
+import { Link } from 'react-router-dom';
 
 const recaptchaRef = React.createRef();
 const recaptchaSiteKey = process.env.REACT_APP_RECAPTCHA_SITE_KEY
@@ -26,7 +27,7 @@ class Register extends Component {
         api.profile.create({data:{user: values}})
         .then(response => {
           console.log(response)
-          if(response.errors  != null ) {
+          if(response != null && response.errors  != null ) {
             console.log("updating errors")
             if(response.errors.email == "has already been taken"){
               let alreadyUsedEmails = this.state.alreadyUsedEmails
@@ -39,12 +40,15 @@ class Register extends Component {
             setErrors(response.errors)
             //setFieldValue({field: 'recaptcha', value: ''})
 
-            console.log("KEEPALIVE")
-          } else {
+            
+          } else if (response != null && response.id != null) {
+            console.log("account created with success")
+            // todo login and redirect user automatically
             store.dispatch({type: actions.profile.types.UPDATE, payload: { profile: response} });
           }
         })
       } catch(e) {
+        console.log(e)
         setErrors(e)
         // or setStatus(transformMyApiErrors(e))
       }
@@ -148,8 +152,8 @@ class Register extends Component {
                               </InputGroupAddon>
                               <Input 
                                 type="email" 
-                                placeholder="Username" 
-                                autoComplete="username" 
+                                placeholder="Email" 
+                                autoComplete="email" 
                                 name="email" 
                                 tag={Field}
                                 invalid={errors.email && touched.email}
@@ -201,6 +205,9 @@ class Register extends Component {
                               <FormFeedback>{errors.base}</FormFeedback>
                             </InputGroup>
                             <Button type='submit' color="success" block disabled={isSubmitting}>Create Account</Button>
+                            <Link to="/login">
+                              <Button color="primary" className="mt-3" block disabled={isSubmitting}>Login</Button>
+                            </Link>
                           </Form>
                         )}
                       </Formik> 

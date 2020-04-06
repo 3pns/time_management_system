@@ -10,7 +10,7 @@ class Profile {
 
   static login = async (payload) => {
     var { data } = payload
-    return ApiPost( BaseUrl + "/users/sign_in", data)
+    return ApiPost( BaseUrl + "/users/sign_in", data, true)
   };
 
   static logout = async (payload) => {

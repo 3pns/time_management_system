@@ -2,10 +2,10 @@ import actions from 'actions';
 
 export const users = (users = [], action) => {
   switch (action.type) {
-    case actions.users.UPDATE_COLLECTION:
+    case actions.users.types.UPDATE:
       var {id, collection} = action.payload
       return users;
-    case actions.users.UPDATE_USERS:
+    case actions.users.types.UPDATE_ALL:
       return users;
     default:
       return users;

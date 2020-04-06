@@ -40,6 +40,7 @@ module ToptalTimeManagementSystem
         resource '*', 
             headers: :any, 
             methods: [:get, :post, :delete, :put, :patch, :options, :head],
+            expose: ['Authorization'],
             credentials: true
       end
     end

@@ -1,13 +1,14 @@
 import store from 'store'
 import actions from 'actions'
 
-const apiRequest = async (verb, url, jsonData = {}) => {
+const apiRequest = async (verb, url, jsonData = {}, updateJwt=false) => {
   try {
     var request = {
       method: verb,
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
+        'Authorization': localStorage.getItem('access-token')
       },
       credentials: "include"
     }
@@ -24,12 +25,23 @@ const apiRequest = async (verb, url, jsonData = {}) => {
     }
     // Unauthorized
     if (`${response.status}` === "401" ) {
-      store.dispatch({type: actions.profile.UPDATE, payload: { profile: null} });
+      store.dispatch({type: actions.profile.types.UPDATE, payload: { profile: null} });
+      return data;
     }
 
     // if (response.status >= 200 && response.status < 299 || response.status >= 422) {
     //   return data;
     // }
+
+    if(updateJwt){
+      for(let entry of response.headers.entries()) {
+        console.log(entry);
+        if(entry[0] == 'authorization'){
+          localStorage.setItem('access-token', entry[1])
+        }
+      }
+    }
+
 
     if (response.status >= 400 && response.status < 600) {
       //store.dispatch({type: 'SHOW_BOOTSTRAP_REDUX_ALERT', payload: {message: `Error ${data.status} :  ${data.error} \n ${data.exception}`, color: "danger"}});
@@ -56,8 +68,8 @@ export const ApiGet = async (url) => {
   return apiRequest('GET', url, null)
 };
 
-export const ApiPost = async (url, jsonData) => {
-  return apiRequest('POST', url, jsonData)
+export const ApiPost = async (url, jsonData, updateJwt=false) => {
+  return apiRequest('POST', url, jsonData, updateJwt)
 };
 
 export const ApiPatch = async (url, jsonData) => {

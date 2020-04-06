@@ -1,5 +1,5 @@
 import React, { Component, Suspense } from 'react';
-import { Redirect, Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
 import * as router from 'react-router-dom';
 import { Container } from 'reactstrap';
 import BootstrapReduxAlert from 'components/BootstrapReduxAlert'
@@ -45,11 +45,14 @@ class Layout extends Component {
 
   signOut(e) {
     e.preventDefault()
-    //this.props.history.push('/login')
-    store.dispatch({type: actions.profile.types.LOGOUT, payload: {id: ""}});
+    localStorage.setItem('access-token', '')
+    this.setState({}); // force rerender
   }
 
   render() {
+    if(!localStorage.getItem('access-token')){
+      return <Redirect to='/login' />
+    }
     return (
       <div className="app">
         <AppHeader fixed>

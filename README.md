@@ -1,27 +1,29 @@
-# README
+# Folder structure
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## rails backend
 
-Things you may want to cover:
+Same as usual
 
-* Ruby version
+## front end React SPA
 
-* System dependencies
+root folder located in toptal_time_management_system_spa
 
-* Configuration
+## Folder structure
+This project is organized by file types. While less common than grouping by features it is
+an approach that fits the ruby on rails mindset and it is one of the recommanded folder organization
+by the React Team
 
-* Database creation
+https://reactjs.org/docs/faq-structure.html
 
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+- actions: actions types and actions related to redux-saga
+- assets: static files
+- components: reusable components that may be shared among different projects
+- containers: components that are connected to the redux store
+- reducers: https://redux.js.org/basics/reducers 
+- sagas: https://redux-saga.js.org/
+- scss: https://sass-lang.com/
+- services: api / file access / local storage access etc ...
+- views: presentational component who should not be directly connected to the redux store.
 
 # Code Conventions
 
@@ -44,6 +46,8 @@ Must follow the pattern below :
 }
 
 # Deployment
+
+## rails backend
 
 ## Environment variables required by the Docker image
 

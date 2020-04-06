@@ -1,11 +1,12 @@
 let TimeEntries = {}
-TimeEntries.CREATE = 'CREATE_TIME_ENTRY';
-TimeEntries.ALL = 'GET_TIME_ENTRIES';
-TimeEntries.GET = 'GET_TIME_ENTRY';
-TimeEntries.PATCH = 'PATCH_TIME_ENTRY';
-TimeEntries.DELETE = 'DELETE_TIME_ENTRY';
+TimeEntries.types = {}
+TimeEntries.types.CREATE = 'CREATE_TIME_ENTRY';
+TimeEntries.types.ALL = 'GET_TIME_ENTRIES';
+TimeEntries.types.GET = 'GET_TIME_ENTRY';
+TimeEntries.types.PATCH = 'PATCH_TIME_ENTRY';
+TimeEntries.types.DELETE = 'DELETE_TIME_ENTRY';
 
-TimeEntries.UPDATE = 'UPDATE_TIME_ENTRY';
-TimeEntries.UPDATE_ALL = 'UPDATE_TIME_ENTRIES';
+TimeEntries.types.UPDATE = 'UPDATE_TIME_ENTRY';
+TimeEntries.types.UPDATE_ALL = 'UPDATE_TIME_ENTRIES';
 
 export default TimeEntries;
