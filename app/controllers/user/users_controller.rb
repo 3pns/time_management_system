@@ -2,16 +2,12 @@ class User::UsersController < ApplicationController
   before_action :find_user, :only => [:show, :edit, :update, :destroy]
 
   def index
-    @q = User.ransack(params[:q])
+    @q = policy_scope(User).ransack(params[:q])
     @pagy, @users = pagy(@q.result)
     render json: { 
       data: @users,
       pagination: pagy_metadata(@pagy) 
     }, status: 200
-  end
-
-  def new 
-    @user = User.new
   end
 
   def create
@@ -21,7 +17,6 @@ class User::UsersController < ApplicationController
     else
       render json: @user.errors, status: 422
     end
-
   end
 
   def show
@@ -50,6 +45,7 @@ class User::UsersController < ApplicationController
     end
 
     def find_user
-      @user = User.find(params[:id])
+      @user = policy_scope(User).find(params[:id])
+      authorize @user
     end
 end

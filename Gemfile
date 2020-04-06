@@ -34,9 +34,7 @@ gem 'ransack'
 gem 'validates_timeliness'
 gem 'recaptcha' # for user account create
 gem 'configatron'
-
-
-# gem 'pundit'
+gem 'pundit'
 
 
 group :development, :test do

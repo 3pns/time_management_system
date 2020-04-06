@@ -4,7 +4,7 @@ class User::TimeEntriesController < User::UserController
   # TODO add role base filtering with pundit
   def index
     @disable_pagination = params[:disable_pagination]
-    @q = TimeEntry.ransack(params[:q])
+    @q = policy_scope(TimeEntry).ransack(params[:q])
     if @disable_pagination
       render json: { 
         data: @q.result,
@@ -17,10 +17,6 @@ class User::TimeEntriesController < User::UserController
         pagination: pagy_metadata(@pagy) 
       }, status: 200
     end
-  end
-
-  def new 
-    @time_entry = TimeEntry.new
   end
 
   def create
@@ -59,6 +55,7 @@ class User::TimeEntriesController < User::UserController
     end
 
     def find_time_entry
-      @time_entry = TimeEntry.find(params[:id])
+      @time_entry = policy_scope(TimeEntry).find(params[:id])
+      authorize @time_entry
     end
 end
