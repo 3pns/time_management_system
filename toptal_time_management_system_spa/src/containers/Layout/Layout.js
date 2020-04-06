@@ -1,6 +1,8 @@
 import React, { Component, Suspense } from 'react';
 import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
 import * as router from 'react-router-dom';
+import { withRouter } from 'react-router';
+import { connect } from 'react-redux';
 import { Container } from 'reactstrap';
 import BootstrapReduxAlert from 'components/BootstrapReduxAlert'
 import {
@@ -53,6 +55,39 @@ class Layout extends Component {
     if(!localStorage.getItem('access-token')){
       return <Redirect to='/login' />
     }
+    // build sidebar menu depending on permissions
+    let navigation = {
+      items: []
+    }
+    navigation.items.push({
+      name: 'Dashboard',
+      url: '/dashboard',
+      icon: 'icon-speedometer',
+    })
+    
+    if(this.props.profile.id != null){
+      let profile = this.props.profile
+      if(profile.permissions["User.show?"]){
+        navigation.items.push({
+          name: 'Users',
+          url: '/users',
+          icon: 'icon-user',
+        })
+      }
+      if(profile.permissions["TimeEntry.show?"]){
+        navigation.items.push({
+          name: 'Time Entries',
+          url: '/time_entries',
+          icon: 'icon-hourglass',
+        })
+      }
+    }
+    navigation.items.push({
+      name: 'Settings',
+      url: '/settings',
+      icon: 'icon-wrench',
+    })
+
     return (
       <div className="app">
         <AppHeader fixed>
@@ -101,4 +136,8 @@ class Layout extends Component {
   }
 }
 
-export default Layout;
+
+const mapStateToProps = state => {
+  return {profile: state.profile}
+}
+export default withRouter(connect(mapStateToProps)(Layout));

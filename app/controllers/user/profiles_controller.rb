@@ -5,6 +5,7 @@ class User::ProfilesController < User::UserController
   end
 
   def update
+    current_user
     return current_user
   end
 end

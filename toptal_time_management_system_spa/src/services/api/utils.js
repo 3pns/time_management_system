@@ -26,6 +26,7 @@ const apiRequest = async (verb, url, jsonData = {}, updateJwt=false) => {
     // Unauthorized
     if (`${response.status}` === "401" ) {
       store.dispatch({type: actions.profile.types.UPDATE, payload: { profile: null} });
+      localStorage.setItem('access-token', '')
       return data;
     }
 

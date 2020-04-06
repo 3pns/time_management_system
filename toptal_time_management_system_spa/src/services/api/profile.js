@@ -18,8 +18,8 @@ class Profile {
     return ApiDelete( BaseUrl + "/users/sign_out", data)
   };
 
-  static profile = async (payload) => {
-    return ApiGet( BaseUrl + "/profile")
+  static get = async (payload) => {
+    return ApiGet( BaseUrl + "/user/profile")
   };
 }
 

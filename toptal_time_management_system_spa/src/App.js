@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import './App.scss';
 import { Layout } from 'containers';
 import actions from 'actions';
+import store from 'store'
 
 const loading = () => <div className="animated fadeIn pt-3 text-center">Loading...</div>;
 
@@ -28,6 +29,8 @@ class App extends Component {
     // store.dispatch({type: INIT_PROJECT, payload: {sku: ""}});
     if(localStorage.getItem('access-token') == null){
       localStorage.setItem('access-token', '')
+    } else {
+      store.dispatch({type: actions.profile.types.GET, payload: {}});
     }
   }
 
