@@ -8,8 +8,8 @@ const Users = React.lazy(() => import('./containers/Users'));
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', exact: true, name: 'Dashboard' },
-  { path: '/users', exact: true, name: 'Home' },
-  { path: '/time_entries', exact: true, name: 'Time Entries' },
+  { path: '/users', name: 'Users' },
+  { path: '/time_entries', name: 'Time Entries' },
   { path: '/settings', exact: true, name: 'Settings' },
 ];
 //   { path: '/users/:id', exact: true, name: 'User Details', component: User },

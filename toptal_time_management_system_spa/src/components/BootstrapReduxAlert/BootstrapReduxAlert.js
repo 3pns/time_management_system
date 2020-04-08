@@ -51,9 +51,6 @@ class BootstrapReduxAlert extends Component {
   }
 
   render() {
-    console.log("FML")
-    console.log(this.props)
-    console.log(this.state)
     return (
       <div id="bootstrapReduxAlert">
         {Object.keys(this.state.messages).map((key) => {
@@ -67,8 +64,6 @@ class BootstrapReduxAlert extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log("RERENDERING")
-  console.log(state)
   if (state.BootstrapReduxAlert != null){
     return { message: state.BootstrapReduxAlert.message, color: state.BootstrapReduxAlert.color, visible: state.BootstrapReduxAlert.visible, date: Date.now()};
   }

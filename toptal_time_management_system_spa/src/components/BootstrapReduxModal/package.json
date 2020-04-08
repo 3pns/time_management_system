@@ -1,0 +1,6 @@
+{
+  "name": "BootstrapReduxModal",
+  "version": "1.0.0",
+  "private": true,
+  "main": "./BootstrapReduxModal.js"
+}

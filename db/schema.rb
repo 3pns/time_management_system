@@ -79,9 +79,9 @@ ActiveRecord::Schema.define(version: 2020_04_06_161028) do
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
 
-  add_foreign_key "time_entries", "users"
-  add_foreign_key "user_roles", "roles"
-  add_foreign_key "user_roles", "users"
-  add_foreign_key "user_settings", "users"
+  add_foreign_key "time_entries", "users", on_delete: :cascade
+  add_foreign_key "user_roles", "roles", on_delete: :cascade
+  add_foreign_key "user_roles", "users", on_delete: :cascade
+  add_foreign_key "user_settings", "users", on_delete: :cascade
   add_foreign_key "users", "users", column: "manager_id"
 end

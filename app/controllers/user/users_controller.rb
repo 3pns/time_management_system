@@ -33,7 +33,7 @@ class User::UsersController < ApplicationController
 
   def destroy
     if @user.destroy
-      head 200
+      head 204
     else
       render json: @user.errors, status: 422
     end

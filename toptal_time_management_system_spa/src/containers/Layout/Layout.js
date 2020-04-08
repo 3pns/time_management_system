@@ -3,8 +3,9 @@ import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
 import * as router from 'react-router-dom';
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
-import { Container } from 'reactstrap';
+import { Container, Modal, ModalBody, ModalFooter, ModalHeader, Button } from 'reactstrap';
 import BootstrapReduxAlert from 'components/BootstrapReduxAlert'
+import BootstrapReduxModal from 'components/BootstrapReduxModal'
 import {
   AppAside,
   AppFooter,
@@ -30,7 +31,6 @@ import Settings from '../Settings'
 import TimeEntries from '../TimeEntries'
 import Users from '../Users'
 
-
 const Aside = React.lazy(() => import('./Aside'));
 const Footer = React.lazy(() => import('./Footer'));
 const Header = React.lazy(() => import('./Header'));
@@ -42,6 +42,8 @@ class Layout extends Component {
     // call if loading data from local storage at refresh, exmple JWT
     //store.dispatch({type: INIT_PROJECT, payload: {sku: ""}});
   //}
+
+
 
   loading = () => <div className="animated fadeIn pt-1 text-center">Loading...</div>
 
@@ -111,10 +113,10 @@ class Layout extends Component {
             <Container fluid>
               <Suspense fallback={this.loading()}>
                 <Switch>
-                  <Route exact path="/dashboard" name="Dashboard" render={props => <Dashboard {...props}/>} />
-                  <Route exact path="/users" name="Users" render={props => <Users {...props}/>} />
-                  <Route exact path="/time_entries" name="Time Entries" render={props => <TimeEntries {...props}/>} />
-                  <Route exact path="/settings" name="Settings" render={props => <Settings {...props}/>} />
+                  <Route exact path="/dashboard" name="Dashboard" render={props => <Dashboard {...props} />} />
+                  <Route path="/users" name="Users" render={props => <Users {...props} />} />
+                  <Route path="/time_entries" name="Time Entries" render={props => <TimeEntries {...props} />} />
+                  <Route path="/settings" name="Settings" render={props => <Settings {...props} />} />
                   <Redirect from="/" to="/dashboard" />
                 </Switch>
               </Suspense>
@@ -131,6 +133,7 @@ class Layout extends Component {
             <Footer />
           </Suspense>
         </AppFooter>
+        <BootstrapReduxModal store={store}/>
       </div>
     );
   }

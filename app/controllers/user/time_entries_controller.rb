@@ -3,20 +3,21 @@ class User::TimeEntriesController < User::UserController
 
   # TODO add role base filtering with pundit
   def index
+    p "ASDSSS"
     @disable_pagination = params[:disable_pagination]
     @q = policy_scope(TimeEntry).ransack(params[:q])
-    if @disable_pagination
-      render json: { 
-        data: @q.result,
-        pagination: {} 
-      }, status: 200
-    else
-      @pagy, @time_entries = pagy(@q.result)
-      render json: { 
-        data: @time_entries,
-        pagination: pagy_metadata(@pagy) 
-      }, status: 200
-    end
+    # if @disable_pagination
+    render json: { 
+      data: @q.result,
+      pagination: {} 
+    }, status: 200
+    # else
+    #   @pagy, @time_entries = pagy(@q.result)
+    #   render json: { 
+    #     data: @time_entries,
+    #     pagination: pagy_metadata(@pagy) 
+    #   }, status: 200
+    # end
   end
 
   def create
@@ -43,7 +44,7 @@ class User::TimeEntriesController < User::UserController
 
   def destroy
     if @time_entry.destroy
-      head 200
+      head 204
     else
       render json: @time_entry.errors, status: 422
     end

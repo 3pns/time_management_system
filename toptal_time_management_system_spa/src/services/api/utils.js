@@ -1,6 +1,10 @@
 import store from 'store'
 import actions from 'actions'
 
+function objectToStringParams(key, obj){
+
+}
+
 const apiRequest = async (verb, url, jsonData = {}, updateJwt=false) => {
   try {
     var request = {
@@ -13,15 +17,33 @@ const apiRequest = async (verb, url, jsonData = {}, updateJwt=false) => {
       credentials: "include"
     }
 
+    // if GET convert JSON body to string params
+    let stringParams = ""
     if (verb !== 'GET'){
       request.body = JSON.stringify(jsonData)
+    } else if (verb == 'GET' && jsonData != null){
+      stringParams = Object.keys(jsonData).map((key) => {
+        if (key == 'q'){
+          return Object.keys(jsonData['q']).map((qKey) => {
+            return 'q['+qKey+']=' + jsonData['q'][qKey]
+          }).join('&');
+        } else {
+          return key + '=' + jsonData[key]
+        }
+        
+      }).join('&');
     }
-    const response = await fetch(url, request)
+    if (stringParams != ""){
+      stringParams = "?" + stringParams
+    }
+    const response = await fetch(url + stringParams, request)
 
     let data = {}
-    // No Content
-    if (`${response.status}` !== "204" ) {
+    
+    try {
+      // throw error if No Content or incorrect json
       data = await response.json();
+    } catch (e) {
     }
     // Unauthorized
     if (`${response.status}` === "401" ) {
@@ -55,8 +77,6 @@ const apiRequest = async (verb, url, jsonData = {}, updateJwt=false) => {
       }
       store.dispatch({type: 'SHOW_BOOTSTRAP_REDUX_ALERT', payload: {message: `Error ${response.status} :  ${response.statusText} \n ${description}`, color: "danger"}});
     } else {
-      console.log("*******")
-      console.log(data)
       return data;
     }
   } catch (e) {
@@ -65,8 +85,8 @@ const apiRequest = async (verb, url, jsonData = {}, updateJwt=false) => {
   }
 }
 
-export const ApiGet = async (url) => {
-  return apiRequest('GET', url, null)
+export const ApiGet = async (url, jsonData) => {
+  return apiRequest('GET', url, jsonData)
 };
 
 export const ApiPost = async (url, jsonData, updateJwt=false) => {

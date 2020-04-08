@@ -12,6 +12,7 @@
 @import '~simple-line-icons/scss/simple-line-icons.scss';
 // Import Main styles for this application
 @import './scss/style.scss';
+@import '~react-dates/lib/css/_datepicker.css';
 
 .App {
   text-align: center;
@@ -59,4 +60,25 @@
 
 .container-fluid {
   margin-top: 24px !important;
+}
+
+.rdg-root {
+  height: 100% !important;
+}
+
+.rdt_ExpanderRow {
+  height: 100% !important;
+}
+
+.rdg-viewport {
+  height: 100% !important;
+}
+
+.rdg-grid {
+  width: 100% !important;
+}
+
+.rdt_TableHeader {
+  height: 0px !important;
+  display: none !important;
 }

@@ -35,12 +35,7 @@ class App extends Component {
   }
 
   render() {
-    console.log("TEST AUTH")
-    console.log(localStorage.getItem('access-token'))
     let isAuthenticated = localStorage.getItem('access-token') ? true : false
-
-    console.log(isAuthenticated)
-    console.log(this.props.profile.authenticated)
 
     if(!isAuthenticated && !anonymous_user_allowed_paths.includes(this.props.location.pathname)) {
       return <Redirect to='/login' />

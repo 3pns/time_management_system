@@ -1,14 +1,23 @@
 import actions from 'actions';
+import { updateCollection } from './utils'
 
-export const users = (users = [], action) => {
+export const users = (state = {users: [], pagination: [], user: {}}, action) => {
   switch (action.type) {
-    case actions.users.types.UPDATE:
+    case actions.users.types.UPDATE_ITEM:
       var {id, collection} = action.payload
-      return users;
-    case actions.users.types.UPDATE_ALL:
-      return users;
+      state.user = action.payload.user
+      return { ...state }
+    case actions.users.types.UPDATE_COLLECTION_WITH_ITEM:
+      var {id, user} = action.payload
+      var users = updateCollection(id, user, state.users)
+      state.users = [...users]
+      return { ...state }
+    case actions.users.types.UPDATE_COLLECTION:
+      state.users = action.payload.users.data
+      state.pagination = action.payload.users.pagination
+      return { ...state }
     default:
-      return users;
+      return state
   }
 };
 
