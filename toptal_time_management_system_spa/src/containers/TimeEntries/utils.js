@@ -35,7 +35,17 @@ const secondsToString = (seconds) => {
   if(minutes.length == 1){
     minutes = "0" + minutes 
   }
-  return hours + "h" + minutes
+  return hours + ":" + minutes
 }
 
-export { exportReportToHtml, secondsToString };
+const stringToSeconds = (string) => {
+  if (string == null){
+    return 0
+  }
+  let array = string.split(":")
+  let seconds =  parseInt(array[0]) ? parseInt(array[0]) * 3600 : 0;
+  seconds += parseInt(array[1]) ? parseInt(array[1]) * 60 : 0;
+  return seconds
+}
+
+export { exportReportToHtml, secondsToString, stringToSeconds };

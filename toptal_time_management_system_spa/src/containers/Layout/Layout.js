@@ -6,6 +6,8 @@ import { connect } from 'react-redux';
 import { Container, Modal, ModalBody, ModalFooter, ModalHeader, Button } from 'reactstrap';
 import BootstrapReduxAlert from 'components/BootstrapReduxAlert'
 import BootstrapReduxModal from 'components/BootstrapReduxModal'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import {
   AppAside,
   AppFooter,
@@ -102,7 +104,7 @@ class Layout extends Component {
             <AppSidebarHeader />
             <AppSidebarForm />
             <Suspense>
-            <AppSidebarNav navConfig={navigation} {...this.props} router={router}/>
+            <AppSidebarNav navConfig={navigation} router={router}/>
             </Suspense>
             <AppSidebarFooter />
             <AppSidebarMinimizer />
@@ -110,6 +112,17 @@ class Layout extends Component {
           <main className="main">
             <AppBreadcrumb appRoutes={routes} router={router}/>
             <BootstrapReduxAlert />
+            <ToastContainer
+              position="bottom-right"
+              autoClose={5000}
+              hideProgressBar
+              newestOnTop
+              closeOnClick={false}
+              rtl
+              pauseOnVisibilityChange
+              draggable={false}
+              pauseOnHover
+             />
             <Container fluid>
               <Suspense fallback={this.loading()}>
                 <Switch>

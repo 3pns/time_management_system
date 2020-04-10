@@ -1,14 +1,18 @@
 
 const updateCollection = (id, item, collection) => {
   //remove duplicate
+  var itemFound = false
   for (var i = 0; i < collection.length; i++) {
     if (collection[i].id === id){
-      //delete collections[i];
       collection.splice(i, 1)
-      break
+      itemFound = true
     }
-    if (item != null){
+    if (itemFound && item != null){
+      console.log("SUCKA")
       collection.push(item);
+    }
+    if(itemFound){
+      break
     }
   }
   return collection

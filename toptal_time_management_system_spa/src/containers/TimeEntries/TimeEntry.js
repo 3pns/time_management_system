@@ -1,4 +1,5 @@
 import React, { Component, lazy, Suspense } from 'react';
+import ReactDOM from "react-dom";
 import {
   ListGroupItem,
   Button
@@ -6,10 +7,14 @@ import {
 import store from 'store'
 import actions from 'actions'
 import DataGrid from 'react-data-grid';
-import { secondsToString } from './utils'
+import { secondsToString, stringToSeconds } from './utils'
 import { put, takeEvery, all } from 'redux-saga/effects'
 import { SHOW_BOOTSTRAP_REDUX_MODAL } from 'components/BootstrapReduxModal/actions'
 import { Badge, Card, CardBody, CardHeader, Col, Pagination, PaginationItem, PaginationLink, Row, Table } from 'reactstrap';
+import TimePicker from 'react-time-picker';
+import moment from 'moment'
+import DurationEditor from './DurationEditor'
+import toast from 'services/utils'
 
 const durationFormatter = (obj) => {
   console.log(obj)
@@ -38,12 +43,12 @@ const actionFormatter = (obj) => {
     <Button className="btn btn-danger" style={{lineHeight: "8px"}} onClick={() => {deleteTimeEntryModel(obj)}}>X</Button>
   )
 }
+
 const columns = [
   
-  { key: 'date', name: 'Date' },
-  { key: 'duration', name: 'Duration', editable: true, formatter: durationFormatter },
-  { key: 'note', name: 'Note', editable: true },
-  { key: 'id', name: 'ID', formatter: actionFormatter},
+  { key: 'duration', name: 'Duration', editable: true, formatter: durationFormatter, width: "20%", editor: DurationEditor  },
+  { key: 'note', name: 'Note', editable: true, width: "60%"},
+  { key: 'id', name: 'ID', width: "20%", formatter: actionFormatter},
 ];
 
 class TimeEntry extends Component {
@@ -66,64 +71,70 @@ class TimeEntry extends Component {
   }
 
   onGridRowsUpdated = obj => {
-    console.log(obj);
+    console.log("onGridRowsUpdated")
+    console.log(obj)
+    console.log(this.props)
+    let i = obj.fromRow
+    let time_entry = this.props.data.time_entries[i]
+    if(obj.updated.note != null){
+      time_entry.note = obj.updated.note
+    }
+    if(obj.updated.duration != null){
+      let newDuration = obj.updated.duration
+      let previousDuration = time_entry.duration
+      if (newDuration < 0){
+        newDuration = 0
+      }
+      let maxValue = 86400 - (this.props.data.totalTime - previousDuration)
+      console.log(newDuration)
+      console.log(maxValue)
+      if (newDuration > maxValue) {
+        newDuration = maxValue
+        toast("warning", "Oops, there are only 24 hours in a day, we had to adjust your time entry")
+      }
+      //assert the value first
+      //this.props.data.totalTime
+
+      time_entry.duration = newDuration
+    }
+    if(obj.updated.note != null || obj.updated.duration != null){
+      console.log(time_entry)
+      store.dispatch({ type: actions.time_entries.types.PATCH , payload: {data:time_entry, id:time_entry.id }  })
+    }
   };
 
-  componentWillReceiveProps(nextProps) {
-    console.log(nextProps)
-    if (nextProps.data != null && nextProps.data.time_entries != null) {
-      let rows = nextProps.data.time_entries
-      this.setState({
-        rows: rows
-      });
-    }
-    
+  componentDidMount() {
+    // fix react data table element that is not configurable
+    let theBadOne = document.getElementsByClassName('jEDPQU')[0]
+    theBadOne.style.cssText = "width: 100% !important; display: flex !important;"; 
   }
 
+
   render() {
-    console.log(this.state)
     console.log(this.props)
-    console.log(this.state.rows.length)
-    console.log(columns)
-    console.log(this.state.rows)
+    let rows = []
+    if(this.props.data.time_entries != null){
+      rows = this.props.data.time_entries
+    }
     return (
       <React.Fragment>
-        <Card>
-          <CardBody>
-            <Table responsive className="table table-responsive-sm table-bordered">
-            </Table>
-            <thead>
-            <tr>
-              <th>Username</th>
-              <th>Date registered</th>
-              <th>Role</th>
-              <th>Status</th>
-            </tr>
-            </thead>
-            <tr>
-              <td>Samppa Nori</td>
-              <td>Samppa Nori</td>
-              <td>Samppa Nori</td>
-              <td>Samppa Nori</td>
-            </tr>
-          </CardBody>
-        </Card>
-        {
-          
+        { <DataGrid
+          columns={columns}
+          rowGetter={i => rows[i]}
+          rows={rows}
+          rowsCount={rows.length}
+          minHeight={20}
+          // height={"100%"}
+          // headerFiltersHeight={0}
+          headerRowHeight={0}
+          // minWidth={20}
+          resizable={false}
+          onGridRowsUpdated={this.onGridRowsUpdated}
+          // onSelectedRowsChange={this.onGridRowsUpdated}
+          onRowsUpdate={this.onGridRowsUpdated}
+          enableCellSelect={true}
+        />}
 
-        }
-        {// <DataGrid
-        //   columns={columns}
-        //   rowGetter={i => this.state.rows[i]}
-        //   rows={this.state.rows}
-        //   rowsCount={this.state.rows.length - 1}
-        //   minHeight={0}
-        //   // headerFiltersHeight={0}
-        //   headerRowHeight={0}
-        //   // minWidth={20}
-        //   // onGridRowsUpdated={this.onGridRowsUpdated}
-        // />
-      }
       </React.Fragment>
     )
   }

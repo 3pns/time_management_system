@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+  include PgSearch::Model
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable, :recoverable, :validatable,
@@ -18,6 +19,13 @@ class User < ApplicationRecord
   validate :manager_cannot_be_itself
 
   default_scope { includes(:settings) }
+
+  pg_search_scope :search_by_fields, 
+                  against: [:first_name, :last_name, :email],
+                  using: {
+                    tsearch: { prefix: true }
+                  }
+
 
   def roles_a
     self.roles.map{|role| role.name}

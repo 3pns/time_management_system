@@ -33,7 +33,7 @@ class TimeEntriesReport extends Component {
                     return (
                       <tr key={index}>
                         <td>{time_entry.date}</td>
-                        <td>{secondsToString(time_entry) }</td>
+                        <td>{secondsToString(time_entry.totalTime) }</td>
                         <td>
                           { time_entry.notes != null && time_entry.notes.map((note, i) => {
                             return (

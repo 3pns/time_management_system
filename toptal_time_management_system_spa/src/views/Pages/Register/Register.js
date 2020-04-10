@@ -13,14 +13,16 @@ const recaptchaRef = React.createRef();
 const recaptchaSiteKey = process.env.REACT_APP_RECAPTCHA_SITE_KEY
 
 class Register extends Component {
-
+  mounted = true;
   state = {
     alreadyUsedEmails: []
   }
 
   create = async (values, { setSubmitting, setErrors, setFieldValue }) => {
     setTimeout(() => {
-      setSubmitting(false);
+      if(this.mounted){
+        setSubmitting(false);
+      }
     }, 2000);
      try {
         console.log(values)
@@ -42,16 +44,18 @@ class Register extends Component {
 
             
           } else if (response != null && response.id != null) {
-            console.log("account created with success")
             // todo login and redirect user automatically
             store.dispatch({type: actions.profile.types.UPDATE, payload: { profile: response} });
           }
         })
       } catch(e) {
-        console.log(e)
         setErrors(e)
         // or setStatus(transformMyApiErrors(e))
       }
+  }
+
+  componentWillUnmount(){
+    this.mounted = false;
   }
 
   render() {

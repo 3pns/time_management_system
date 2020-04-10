@@ -25,6 +25,7 @@ class Users extends Component {
   }
 
   dataTableState = {
+    currentPage: 1,
     rowsPerPage: 10,
     sorting: "",
     sortingOrder: ""
@@ -93,6 +94,11 @@ class Users extends Component {
     this.refresh()
   }
 
+  onChangePage = (page, totalRows) => {
+    this.dataTableState.currentPage = page
+    this.refresh()
+  }
+
   onSort = (column, sortDirection, event) => {
     console.log(column)
 
@@ -105,17 +111,12 @@ class Users extends Component {
     console.log("refreshing data")
     console.log(this.dataTableState)
     let body = {}
+    body.page = this.dataTableState.currentPage
     body.items = this.dataTableState.rowsPerPage
     if(this.dataTableState.sorting != ""){
       body.q = {}
       body.q.s = this.dataTableState.sorting + " " + this.dataTableState.sortingOrder
     }
-    // ?items=2&q[date_gteq]=2021-1-01&q[s]=created_at asc
-    // let urlParams = ""
-    // urlParams = urlParams + "?items=" + this.dataTableState.rowsPerPage
-    // if(this.dataTableState.sorting != ""){
-    //   urlParams = urlParams + "&q[s]=" + this.dataTableState.sorting + " " + this.dataTableState.sortingOrder
-    // }
     store.dispatch({type: actions.users.types.ALL, payload: body});
   }
 
@@ -146,6 +147,7 @@ class Users extends Component {
               paginationRowsPerPageOptions = {[5,10,15,20,25,50,100,200]}
               paginationTotalRows={this.props.users.pagination.count}
               onChangeRowsPerPage={this.onChangeRowsPerPage}
+              onChangePage={this.onChangePage}
               onSort={this.onSort}
             />
           </div>

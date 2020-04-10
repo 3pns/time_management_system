@@ -2,7 +2,7 @@ import { BaseUrl, ApiGet, ApiPost, ApiPatch, ApiDelete }  from './utils'
 
 class TimeEntries {
   static all = async (payload) => {
-    return ApiGet( BaseUrl + "/user/time_entries")
+    return ApiGet( BaseUrl + "/user/time_entries", payload)
   };
 
   static get = async (payload) => {

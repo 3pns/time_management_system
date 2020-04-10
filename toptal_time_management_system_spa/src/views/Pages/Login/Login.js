@@ -9,26 +9,33 @@ import api from 'services/api';
 import store from 'store'
 
 class Login extends Component {
+  mounted = true;
 
   login = (values, { setSubmitting, errors, setErrors }) => {
     setTimeout(() => {
-      setSubmitting(false);
+      if(this.mounted){
+        setSubmitting(false);
+      }
     }, 2000);
 
     try {
-      console.log(values)
       api.profile.login({data:{user: values}})
       .then(response => {
-        if(response != null && response.error == "Invalid Email or password."){
+        if(this.mounted, response != null && response.error == "Invalid Email or password."){
             setErrors({email: "Invalid Email or password.", password: "Invalid Email or password."})
-        } else if (response != null && response.id != null) {
+        } else if (this.mounted, response != null && response.id != null) {
           store.dispatch({type: actions.profile.types.UPDATE, payload: { profile: response} });
         }
       })
     } catch(e) {
-      console.log(e)
-      setErrors(e)
+      if(this.mounted){
+        setErrors(e)
+      }
     }
+  }
+
+  componentWillUnmount(){
+    this.mounted = false;
   }
 
   render() {
@@ -121,7 +128,7 @@ class Login extends Component {
 
                   </CardBody>
                 </Card>
-                <Card className="text-white bg-primary py-5 d-md-down-none" style={{ width: '44%' }}>
+                <Card className="text-white bg-primary py-5 ">
                   <CardBody className="text-center">
                     <div>
                       <h2>Sign up</h2>

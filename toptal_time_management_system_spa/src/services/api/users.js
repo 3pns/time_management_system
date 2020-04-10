@@ -2,7 +2,6 @@ import { BaseUrl, ApiGet, ApiPost, ApiPatch, ApiDelete }  from './utils'
 
 class Users {
   static all = async (payload) => {
-    console.log(payload)
     return ApiGet( BaseUrl + "/user/users", payload)
   };
 
