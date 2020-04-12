@@ -1,25 +1,9 @@
 import { call, put } from 'redux-saga/effects'
 import api from 'services/api'
 import actions from 'actions'
-import { SHOW_BOOTSTRAP_REDUX_ALERT } from 'components/BootstrapReduxAlert/actions'
+import { toast } from 'services/utils'
 
 class Profile {
-
-  static * create(action) {
-     try {
-      console.log("wwwww")
-        const profile = yield call(api.profile.create, action.payload );
-        if (profile != null){
-          yield put({type: actions.profile.types.UPDATE, payload: { profile: profile} });
-          yield put({type: SHOW_BOOTSTRAP_REDUX_ALERT, payload: { message: "Sign in with success", color: "success", visible: true }});
-        } else {
-          console.log(profile)
-          yield put({type: SHOW_BOOTSTRAP_REDUX_ALERT, payload: { message: "Error while sign in", color: "danger", visible: true }});
-        }
-     } catch (e) {
-        yield put({type: SHOW_BOOTSTRAP_REDUX_ALERT, payload: { message: e.message, color: "danger", visible: true }});
-     }
-  }
 
   static * login(action) {
      try {
@@ -27,26 +11,18 @@ class Profile {
         if (profile != null){
           profile.authenticated = true
           yield put({type: actions.profile.types.UPDATE, payload: { profile: profile} });
-          yield put({type: SHOW_BOOTSTRAP_REDUX_ALERT, payload: { message: "Sign in with success", color: "success", visible: true }});
+          toast("success", "Sign in with success")
         } else {
-          yield put({type: SHOW_BOOTSTRAP_REDUX_ALERT, payload: { message: "Error while sign in", color: "danger", visible: true }});
+          // yield put({type: SHOW_BOOTSTRAP_REDUX_ALERT, payload: { message: "Error while sign in", color: "danger", visible: true }});
+          toast("danger", "Error while sign in")
         }
      } catch (e) {
-        yield put({type: SHOW_BOOTSTRAP_REDUX_ALERT, payload: { message: e.message, color: "danger", visible: true }});
+      toast("danger", e.message)
      }
   }
 
   static * logout(action) {
     yield put({type: actions.profile.types.UPDATE, payload: { profile: {authenticated: false}} });
-     // try { 
-     //    const profile = yield call(api.profile.logout, action.payload);
-     //    if (profile != null){
-     //      yield put({type: actions.profile.types.UPDATE, payload: { profile: profile} });
-     //      yield put({type: SHOW_BOOTSTRAP_REDUX_ALERT, payload: { message: "Sign out with success", color: "success", visible: true }});
-     //    }
-     // } catch (e) {
-     //    yield put({type: SHOW_BOOTSTRAP_REDUX_ALERT, payload: { message: e.message, color: "danger", visible: true }});
-     // }
   }
 
   static * get(action) {
@@ -59,7 +35,39 @@ class Profile {
           yield put({type: actions.profile.types.UPDATE, payload: { profile: {authenticated: false}} });
         }
      } catch (e) {
-        yield put({type: SHOW_BOOTSTRAP_REDUX_ALERT, payload: {message: e.message, color: "danger", visible: true}});
+        toast("danger", e.message)
+     }
+  }
+
+  static * patch(action) {
+     try { 
+        let profile = yield call(api.profile.patch, action.payload);
+        if (profile.errors){
+          yield put({type: actions.profile.types.UPDATE_ERRORS, payload: { errors: profile }});
+          profile = null
+        }
+        if (profile != null){
+          toast("success", "Profile updated with success")
+          yield put({type: actions.profile.types.UPDATE, payload: { profile: profile} });
+        }
+     } catch (e) {
+        toast("error", e.message)
+     }
+  }
+
+  static * patchNewPassword(action) {
+     try { 
+        let profile = yield call(api.profile.patchNewPassword, action.payload);
+        if (profile.errors){
+          yield put({type: actions.profile.types.UPDATE_ERRORS, payload: { errors: profile }});
+          profile = null
+        }
+        if (profile != null){
+          toast("success", "Password updated with success")
+          yield put({type: actions.profile.types.UPDATE, payload: { profile: profile} });
+        }
+     } catch (e) {
+        toast("error", e.message)
      }
   }
 }

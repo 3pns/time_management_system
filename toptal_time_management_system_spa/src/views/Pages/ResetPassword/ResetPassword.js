@@ -8,15 +8,13 @@ import api from 'services/api'
 import actions from 'actions'
 import store from 'store'
 import { Link } from 'react-router-dom';
+import { SHOW_BOOTSTRAP_REDUX_ALERT } from 'components/BootstrapReduxAlert/actions'
 
 const recaptchaRef = React.createRef();
 const recaptchaSiteKey = process.env.REACT_APP_RECAPTCHA_SITE_KEY
 
-class Register extends Component {
+class ResetPassword extends Component {
   mounted = true;
-  state = {
-    alreadyUsedEmails: []
-  }
 
   create = async (values, { setSubmitting, setErrors, setFieldValue }) => {
     setTimeout(() => {
@@ -25,32 +23,34 @@ class Register extends Component {
       }
     }, 2000);
      try {
+        // get the token from parms and add it to the values
+        
         console.log(values)
-        api.profile.create({data:{user: values}})
+        console.log(this.props)
+        let reset_password_token = new URLSearchParams(this.props.location.search).get("token")
+        console.log(reset_password_token)
+        values['reset_password_token'] = reset_password_token
+        console.log(values)
+        api.profile.patchNewPassword({data:{user: values}})
         .then(response => {
           console.log(response)
           if(response != null && response.errors  != null ) {
             console.log("updating errors")
-            if(response.errors.email == "has already been taken"){
-              let alreadyUsedEmails = this.state.alreadyUsedEmails
-              alreadyUsedEmails.push(values.email)
-              this.setState({
-               alreadyUsedEmails: alreadyUsedEmails 
-              })
-            }
             recaptchaRef.current.reset()
+            console.log(response.errors)
+            console.log(response.errors.reset_password_token)
+            if(response.errors.reset_password_token != null){
+              console.log("ISTRUE")
+              store.dispatch({type: SHOW_BOOTSTRAP_REDUX_ALERT, payload: { message: "The reset password token may be invalid or may be expired, please request a new link.", color: "danger", visible: true }});
+              delete response.errors['reset_password_token']
+            }
             setErrors(response.errors)
-            //setFieldValue({field: 'recaptcha', value: ''})
-
-            
-          } else if (response != null && response.id != null) {
-            // todo login and redirect user automatically
-            store.dispatch({type: actions.profile.types.UPDATE, payload: { profile: response} });
+          } else if (response != null) {
+            store.dispatch({type: SHOW_BOOTSTRAP_REDUX_ALERT, payload: { message: "You password has been updated. You can now login with your new password.", color: "success", visible: true }});
           }
         })
       } catch(e) {
         setErrors(e)
-        // or setStatus(transformMyApiErrors(e))
       }
   }
 
@@ -68,35 +68,9 @@ class Register extends Component {
                 <CardBody className="p-4">
                   {
                       <Formik
-                        initialValues={{ first_name: '', last_name: '', email: '', password: '', password_confirmation: '', recaptcha: '' }}
-                        validate={values => {
-                          const errors = {};
-                          if (!values.email) {
-                            errors.email = 'Required';
-                          } else if (
-                            !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-                          ) {
-                            errors.email = 'Invalid email address';
-                          } else if (
-                            this.state.alreadyUsedEmails.includes(values.email)
-                          ) {
-                            errors.email = "Email has already been taken";
-                          }
-
-                          return errors;
-                        }}
+                        initialValues={{ password: '', password_confirmation: '',recaptcha: '', reset_password_token: '' }}
 
                         validationSchema={yup.object().shape({
-                          first_name: yup.string()
-                            .required('Required'),
-                          last_name: yup.string()
-                            .required('Required'),
-                          email: yup.string()
-                            .required('Required'),
-                          password: yup.string()
-                            .min(6, 'Too Short!')
-                            .required('Required')
-                            .ensure(),
                           password_confirmation: yup.string()
                             .oneOf([yup.ref('password'), null], "Passwords don't match")
                             .min(6, 'Too Short!')
@@ -112,60 +86,20 @@ class Register extends Component {
                         {({ isSubmitting, errors, touched, setFieldValue }) => (
                           <Form>
                
-                            <h1>Register</h1>
-                            <p className="text-muted">Create your account</p>
+                            <h1>Reset Password</h1>
+                            <p className="text-muted">Please choose a new password</p>
                             <BootstrapReduxAlert />
-
                             <InputGroup className="mb-3">
-                              <InputGroupAddon addonType="prepend">
-                                <InputGroupText>
-                                  <i className="icon-user"></i>
-                                </InputGroupText>
-                              </InputGroupAddon>
+                            <FormFeedback className={errors.reset_password_token ? "valid-feedback d-block" : "invalid-feedback"}>{errors.reset_password_token}</FormFeedback>
                               <Input 
-                                type="text" 
-                                placeholder="First Name" 
-                                autoComplete="first_name" 
-                                name="first_name" 
+                                type="hidden" 
+                                placeholder="Reset Password Token" 
+                                autoComplete="reset_password_token"
+                                name="reset_password_token"
                                 tag={Field}
-                                invalid={errors.first_name && touched.first_name}
-                                 />
-                              <FormFeedback>{errors.first_name}</FormFeedback>
+                                invalid={errors.reset_password_token}
+                              />
                             </InputGroup>
-
-                            <InputGroup className="mb-3">
-                              <InputGroupAddon addonType="prepend">
-                                <InputGroupText>
-                                  <i className="icon-user"></i>
-                                </InputGroupText>
-                              </InputGroupAddon>
-                              <Input 
-                                type="text" 
-                                placeholder="Last Name" 
-                                autoComplete="last_name" 
-                                name="last_name" 
-                                tag={Field}
-                                invalid={errors.last_name && touched.last_name}
-                                 />
-                              <FormFeedback>{errors.last_name}</FormFeedback>
-                            </InputGroup>
-
-                            <InputGroup className="mb-3">
-                              <InputGroupAddon addonType="prepend">
-                                <InputGroupText>@</InputGroupText>
-                              </InputGroupAddon>
-                              <Input 
-                                type="email" 
-                                placeholder="Email" 
-                                autoComplete="email" 
-                                name="email" 
-                                tag={Field}
-                                invalid={errors.email && touched.email}
-                                 />
-                              <FormFeedback>{errors.email}</FormFeedback>
-                            </InputGroup>
-
-
                             <InputGroup className="mb-3">
                               <InputGroupAddon addonType="prepend">
                                 <InputGroupText>
@@ -208,7 +142,7 @@ class Register extends Component {
                               />
                               <FormFeedback>{errors.base}</FormFeedback>
                             </InputGroup>
-                            <Button type='submit' color="success" block disabled={isSubmitting}>Create Account</Button>
+                            <Button type='submit' color="success" block disabled={isSubmitting}>Confirm</Button>
                             <Link to="/login">
                               <Button color="primary" className="mt-3" block disabled={isSubmitting}>Return</Button>
                             </Link>
@@ -227,4 +161,4 @@ class Register extends Component {
   }
 }
 
-export default Register;
+export default ResetPassword;

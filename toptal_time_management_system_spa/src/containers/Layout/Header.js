@@ -38,7 +38,7 @@ class Header extends Component {
 
           <AppHeaderDropdown direction="down">
             <DropdownToggle nav>
-              <Avatar name="Foo Bar" className="img-avatar" size="40"/>
+              <Avatar name={this.props.fullName} className="img-avatar" size="40"/>
             </DropdownToggle>
             <DropdownMenu  >
               <DropdownItem header tag="div" className="text-center"><strong>Account</strong></DropdownItem>

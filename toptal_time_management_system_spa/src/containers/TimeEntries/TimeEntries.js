@@ -163,14 +163,17 @@ class TimeEntries extends Component {
   }
 
   render() {
-    let preferred_working_hours_per_day = null;
+    let pwhpd = null; // preferred_working_hours_per_day
+    let pwhpd_enabled = false; // preferred_working_hours_per_day_enabled
     if (this.props.profile != null && this.props.profile.settings != null  ){
-      preferred_working_hours_per_day = this.props.profile.settings.preferred_working_hours_per_day
+      pwhpd = this.props.profile.settings.preferred_working_hours_per_day
+      pwhpd_enabled = this.props.profile.settings.preferred_working_hours_per_day_enabled
     }
     const conditionalRowStyles = [
 
       {
-        when: row => preferred_working_hours_per_day != null && row.totalTime > preferred_working_hours_per_day,
+        // green
+        when: row => pwhpd_enabled && pwhpd != null && row.totalTime > pwhpd * 3600,
         style: {
           backgroundColor: 'rgba(63, 195, 128, 0.9)',
           color: 'black',
@@ -180,9 +183,10 @@ class TimeEntries extends Component {
         },
       },
       {
-        when: row => preferred_working_hours_per_day != null && row.totalTime <= preferred_working_hours_per_day,
+        // red
+        when: row => pwhpd_enabled && pwhpd != null && row.totalTime <= pwhpd * 3600,
         style: {
-          backgroundColor: 'rgba(248, 148, 6, 0.9)',
+          backgroundColor: 'rgba(248, 108, 107, 0.9)',
           color: 'black',
           '&:hover': {
             cursor: 'pointer',
@@ -190,7 +194,7 @@ class TimeEntries extends Component {
         },
       },
       {
-        when: row => preferred_working_hours_per_day == null,
+        when: row => pwhpd == null,
         style: {
           backgroundColor: 'rgba(255, 255, 255, 0.9)',
           color: 'black',
@@ -223,7 +227,7 @@ class TimeEntries extends Component {
               <h2>Time Entries</h2>
             </div>
             <div className="col-md-4 float-right">
-              <Button color="primary" className="float-right" onClick={() => exportReportToHtml(this.props.aggregated_time_entries, this.props.profile)}>
+              <Button color="primary" className="float-right" onClick={() => exportReportToHtml(this.props.aggregated_time_entries, this.props.profile, this.state.startDate, this.state.endDate)}>
                 <i className="fa fa-download" aria-hidden="true"> HTML Export</i>
               </Button>
             </div>

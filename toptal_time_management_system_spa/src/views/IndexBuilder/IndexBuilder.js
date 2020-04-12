@@ -19,7 +19,7 @@ class IndexBuilder extends Component {
   ActionsCells = (obj) => {
     return (
       <div >
-        <Link className="btn btn-info" to={this.props.resourceBasePath + '/' + +obj.id}>Show</Link>
+        <Link className="btn btn-info" to={this.props.resourceBasePath + '/' + +obj.id}>View</Link>
         <Link className="btn btn-warning" to={this.props.resourceBasePath + '/'  +obj.id+ "/edit"}>Edit</Link>
         <Button className="btn btn-danger" onClick={() => {this.deleteUserModal(obj.id)}}>Delete</Button>
       </div>

@@ -3,6 +3,10 @@ import { Nav, NavItem, NavLink, Progress, TabContent, TabPane, ListGroup, ListGr
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { AppSwitch } from '@coreui/react'
+import { withRouter } from 'react-router';
+import { connect } from 'react-redux';
+import actions from 'actions'
+import store from 'store'
 
 const propTypes = {
   children: PropTypes.node,
@@ -18,6 +22,9 @@ class Aside extends Component {
     this.toggle = this.toggle.bind(this);
     this.state = {
       activeTab: '1',
+      pwhpd_enabled: false,
+
+
     };
   }
 
@@ -29,10 +36,39 @@ class Aside extends Component {
     }
   }
 
+  onChange = (event) => {
+    console.log(this.state.pwhpd_enabled)
+    let newVal = !this.state.pwhpd_enabled
+    this.setState({
+      pwhpd_enabled: newVal
+    })
+    store.dispatch({type: actions.users.types.PATCH_USER_SETTINGS, payload: { data: { user_setting: {preferred_working_hours_per_day_enabled: newVal}}, id: this.props.profile.id } });
+  }
+
+  onDispatch = (values) => {
+    store.dispatch({type: actions.users.types.PATCH_USER_SETTINGS, payload: { data: { user_setting: values}, id: this.props.profile.id } });
+  }
+
+  static getDerivedStateFromProps(props, current_state) {
+    if (props.profile.settings &&
+        props.profile.settings.preferred_working_hours_per_day_enabled != current_state.pwhpd_enabled ) {
+      return {
+        pwhpd_enabled: props.profile.settings.preferred_working_hours_per_day_enabled
+      }
+    }
+    return null
+  }
+
   render() {
 
     // eslint-disable-next-line
     const { children, ...attributes } = this.props;
+
+    let profile = {}
+    if( this.props.profile.settings ){
+      profile.preferred_working_hours_per_day_enabled = this.props.profile.settings.preferred_working_hours_per_day_enabled
+    }
+
 
     return (
       <React.Fragment>
@@ -53,7 +89,7 @@ class Aside extends Component {
             <div className="aside-options">
               <div className="clearfix mt-4">
                 <small><b>Preferred Working Hours per day</b></small>
-                <AppSwitch className={'float-right'} variant={'pill'} label color={'success'} defaultChecked size={'sm'}/>
+                <AppSwitch className={'float-right'} variant={'pill'} label color={'success'} checked={this.state.pwhpd_enabled} onChange={this.onChange} size={'sm'}/>
               </div>
               <div>
                 <small className="text-muted">
@@ -70,7 +106,7 @@ class Aside extends Component {
   }
 }
 
-Aside.propTypes = propTypes;
-Aside.defaultProps = defaultProps;
-
-export default Aside;
+const mapStateToProps = state => {
+  return { profile: state.profile }
+}
+export default withRouter(connect(mapStateToProps)(Aside));

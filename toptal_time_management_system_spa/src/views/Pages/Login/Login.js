@@ -119,7 +119,9 @@ class Login extends Component {
                                 <Button color="primary" className="px-4" type="submit" disabled={isSubmitting}>Login</Button>
                               </Col>
                               <Col xs="6" className="text-right">
-                                <Button color="link" className="px-0">Forgot password?</Button>
+                                <Link to="/forgot_password">
+                                  Forgot password?
+                                </Link>
                               </Col>
                             </Row>
                           </Form>

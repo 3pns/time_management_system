@@ -52,6 +52,7 @@ class Layout extends Component {
   signOut(e) {
     e.preventDefault()
     localStorage.setItem('access-token', '')
+    localStorage.removeItem('currentUserId')
     store.dispatch({type: actions.profile.types.UPDATE, payload: { profile: {}} });
     this.setState({}); // force rerender
   }
@@ -97,7 +98,7 @@ class Layout extends Component {
       <div className="app">
         <AppHeader fixed>
           <Suspense  fallback={this.loading()}>
-            <Header onLogout={e=>this.signOut(e)}/>
+            <Header onLogout={e=>this.signOut(e)} fullName={ this.props.profile.first_name + " " + this.props.profile.last_name }/>
           </Suspense>
         </AppHeader>
         <div className="app-body">

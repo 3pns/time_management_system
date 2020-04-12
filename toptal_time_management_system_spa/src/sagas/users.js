@@ -74,6 +74,38 @@ class Users {
      }
   }
 
+  static * patchUserSettings(action) {
+     try { 
+        let user_settings = yield call(api.users.patchUserSettings, action.payload);
+        if (user_settings.errors){
+          yield put({type: actions.users.types.UPDATE_ERRORS, payload: { errors: user_settings }});
+          user_settings = null
+        }
+        if (user_settings != null){
+          toast("success", "Settings updated with success")
+          //todo update profile directly inside reducer
+          yield put({type: actions.profile.types.GET, payload: {}});
+        }
+     } catch (e) {
+        toast("error", e.message)
+     }
+  }
+
+  static * patchNewPassword(action) {
+     try { 
+        let user = yield call(api.users.patchNewPassword, action.payload);
+        if (user.errors){
+          yield put({type: actions.users.types.UPDATE_ERRORS, payload: { errors: user }});
+          user = null
+        }
+        if (user != null){
+          toast("success", "User updated with success")
+        }
+     } catch (e) {
+        toast("error", e.message)
+     }
+  }
+
   static * delete(action) {
      try { 
         const user = yield call(api.users.delete, { id: action.payload.id });

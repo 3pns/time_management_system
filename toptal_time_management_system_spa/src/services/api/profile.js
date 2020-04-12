@@ -1,4 +1,4 @@
-import { BaseUrl, ApiGet, ApiPost, ApiDelete }  from './utils'
+import { BaseUrl, ApiGet, ApiPost, ApiDelete, ApiPatch }  from './utils'
 
 class Profile {
   static create = async (payload) => {
@@ -20,6 +20,21 @@ class Profile {
 
   static get = async (payload) => {
     return ApiGet( BaseUrl + "/user/profile")
+  };
+
+  static patch = async (payload) => {
+    var { id, data } = payload
+    return ApiPatch( BaseUrl + "/user/profile", data);
+  };
+
+  static askNewPassword = async (payload) => {
+    var { data } = payload
+    return ApiPost( BaseUrl + "/users/password", data);
+  };
+
+  static patchNewPassword = async (payload) => {
+    var { data } = payload
+    return ApiPatch( BaseUrl + "/users/password", data);
   };
 }
 

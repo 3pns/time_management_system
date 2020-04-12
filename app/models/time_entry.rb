@@ -7,7 +7,7 @@ class TimeEntry < ApplicationRecord
 
   validates_numericality_of :user_id
   validates_date :date
-  validates_numericality_of :duration
+  validates_numericality_of :duration, { greater_than_or_equal_to: 1, smaller_than_or_equal_to: 86400 }
   validates_length_of :note, maximum: 255
 
   validate :aggregated_user_daily_duration_less_than_24h

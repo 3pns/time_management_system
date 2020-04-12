@@ -8,6 +8,10 @@ Profile.types.LOGIN = 'LOGIN';
 Profile.types.LOGOUT = 'LOGOUT';
 Profile.types.PATCH = 'PATCH_PROFILE';
 Profile.types.GET = 'GET_PROFILE';
+Profile.types.PATCH = 'PATCH_PROFILE';
+Profile.types.ASK_NEW_PASSWORD = 'ASK_NEW_PASSWORD';
+Profile.types.RESET_PASSWORD = 'RESET_PASSWORD';
+Profile.types.PATCH_NEW_PASSWORD = 'PATCH_NEW_PASSWORD';
 
 Profile.types.UPDATE = 'UPDATE_PROFILE';
 

@@ -13,12 +13,17 @@ class TimeEntriesReport extends Component {
   render() {
     console.log(this.props)
     return (
-      <div className="animated fadeIn">
+      <div className="animated fadeIn" style={{backgroundColor: 'rgba(255, 255, 255, 0.9)'}} >
         <Row>
           <Col lg="12" >
             <Card>
               <CardBody>
-              <h2>Time Entry report of { this.props.user.first_name + " " + this.props.user.last_name }</h2>
+              <h1 className="text-center">Time Entry</h1>
+                <Row>
+                  <div className="col-lg-6"><h2>User : { this.props.user.first_name + " " + this.props.user.last_name }</h2></div>
+                  <div className="col-lg-6"><h2>Period : {this.props.startDate.format("YYYY-MM-DD")} to {this.props.endDate.format("YYYY-MM-DD")}</h2></div>       
+                </Row>
+
                 <Table responsive>
                   <thead>
                   <tr>
@@ -30,8 +35,17 @@ class TimeEntriesReport extends Component {
                   <tbody>
                   { this.props.time_entries.each }
                   { this.props.time_entries != null && this.props.time_entries.map((time_entry, index) => {
+
+                    let backgroundColor = 'rgba(255, 255, 255, 0.9)' //default
+                    if(this.props.user.settings.preferred_working_hours_per_day_enabled && 
+                      time_entry.totalTime > this.props.user.settings.preferred_working_hours_per_day * 3600){
+                      backgroundColor = 'rgba(63, 195, 128, 0.9)' //green
+                    } else if (this.props.user.settings.preferred_working_hours_per_day_enabled){
+                      backgroundColor = 'rgba(248, 108, 107, 0.9)' //red
+                    }
+
                     return (
-                      <tr key={index}>
+                      <tr key={index} style={{backgroundColor: backgroundColor}}>
                         <td>{time_entry.date}</td>
                         <td>{secondsToString(time_entry.totalTime) }</td>
                         <td>

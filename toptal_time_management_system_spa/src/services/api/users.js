@@ -26,6 +26,15 @@ class Users {
     return ApiDelete( BaseUrl + "/user/users/" + id);
   };
 
+  static getUserSettings = async (payload) => {
+    var { id } = payload
+    return ApiGet( BaseUrl + "/user/users/" + id + '/user_settings' );
+  };
+
+  static patchUserSettings = async (payload) => {
+    var { id, data } = payload
+    return ApiPatch( BaseUrl + "/user/users/" + id + '/user_settings', data);
+  };
 }
 
 export default Users;

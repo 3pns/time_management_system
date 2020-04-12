@@ -2,7 +2,7 @@ import ReactDOM from 'react-dom'
 import React from 'react';
 import TimeEntriesReport from './TimeEntriesReport'
 
-const exportReportToHtml = function (time_entries, user){
+const exportReportToHtml = function (time_entries, user, startDate, endDate){
   console.log("exporting data to html");
   var element = document.createElement('a');
   let time_entries_clone = document.querySelector('#times-entries-parent-holder').cloneNode( true );
@@ -12,7 +12,7 @@ const exportReportToHtml = function (time_entries, user){
   let body_holder = document.createElement('body');
 
   // body_holder.appendChild(time_entries_clone); 
-  ReactDOM.render(<TimeEntriesReport time_entries={time_entries} user={user}/> , body_holder)
+  ReactDOM.render(<TimeEntriesReport time_entries={time_entries} user={user} startDate={startDate} endDate={endDate} /> , body_holder)
   //body_holder.appendChild( );
 
   html_holder.appendChild(body_holder);

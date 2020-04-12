@@ -1,34 +1,20 @@
 import React, { Component, lazy, Suspense } from 'react';
 import {
-  ListGroupItem,
-  Button,
   Card,
   CardHeader,
   CardBody,
-  Row,
-  Table,
-  FormFeedback,
-  Input,
-  InputGroup,
-  Label,
-  FormGroup
+  Row
 } from 'reactstrap';
-import { Formik, Field, Form/*, ErrorMessage*/ } from 'formik';
 import * as yup from 'yup';
-import DataTable from 'react-data-table-component';
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import actions from 'actions'
 import store from 'store'
-import {
-  Link
-} from "react-router-dom";
-import { Profile } from 'views'
+import { FormBuilder } from 'views'
 import Avatar from 'react-avatar';
 import { LineDivider } from 'views'
-import api from 'services/api'
-import { toast } from 'services/utils'
-import { FormBuilder } from 'views'
+import TimeEntrySettings from '../Settings/TimeEntrySettings'
+import PasswordSettings from '../Settings/PasswordSettings'
 
 class Edit extends Component {
   componentWillMount() {
@@ -112,7 +98,7 @@ class Edit extends Component {
                   initialErrors={{...this.props.errors}}
                   onSubmit={this.onSubmit}
                   enableReinitialize={true}
-                  submitButtonText= "Create"
+                  submitButtonText= "Save"
                   returnButtonText= "Return"
                   returnButtonTo= "/users"
                   fields={this.fields}
@@ -121,7 +107,20 @@ class Edit extends Component {
                 />
               </div>
             </Row>
+            <LineDivider/>
+            <Row>
+              <div className="col-lg-3"/>
+                {/*<PasswordSettings profile={this.props.user} errors={this.props.userErrors}/>*/}
+              <div className="col-lg-6"></div>
+            </Row>          
           </div>
+            <LineDivider/>
+            <Row>
+              <div className="col-lg-3"/>
+                {/*<TimeEntrySettings profile={this.props.user} errors={this.props.profileErrors}/>*/}
+              <div className="col-lg-6"></div>
+            </Row>
+
         </CardBody>
       </Card>
     )
@@ -132,9 +131,13 @@ const mapStateToProps = state => {
   let user = state.users.user
   if(user.id == null){
     user = {
-      email: '',
       first_name: '',
       last_name: '',
+      email: '',
+      settings: {
+        preferred_working_hours_per_day: 0,
+        preferred_working_hours_per_day_enable: false
+      }
     }
   }
   return {profile: state.profile, user: user, errors: state.users.errors}
