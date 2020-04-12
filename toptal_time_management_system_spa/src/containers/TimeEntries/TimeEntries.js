@@ -5,7 +5,8 @@ import {
   Card,
   CardHeader,
   CardBody,
-  Row
+  Row, 
+  Input, 
 } from 'reactstrap';
 import store from 'store'
 import { withRouter } from 'react-router';
@@ -18,6 +19,9 @@ import { SHOW_BOOTSTRAP_REDUX_MODAL } from 'components/BootstrapReduxModal/actio
 import { DateRangePicker, SingleDatePicker, DayPickerRangeController } from 'react-dates';
 import moment from 'moment'
 import Autosuggest from 'react-autosuggest';
+import { has_role } from 'services/utils'
+import TimeEntryForm from './TimeEntryForm'
+import { LineDivider } from 'views'
 
 const columns = [
   {
@@ -82,8 +86,6 @@ function renderSuggestion(suggestion) {
 }
 
 class TimeEntries extends Component {
-
-
   constructor(props) {
     super(props);
     // Don't call this.setState() here!
@@ -205,14 +207,14 @@ class TimeEntries extends Component {
       value: searchValue,
       onChange: this.onChange
     };
-    console.log(inputProps)
     if (this.state.selectedUserId == null && this.props.profile.id != null){
       this.state.selectedUserId = this.props.profile.id
       this.refresh()
     }
-    console.log(this.props)
-    console.log(this.state)
 
+    const isAllowedOtherUsersTimeEntries = false
+
+    console.log(this.props)
     return (
       <Card>
         <CardHeader>
@@ -228,7 +230,11 @@ class TimeEntries extends Component {
           </div>
         </CardHeader>
         <CardBody>
-          <Row>
+          <Row className="form-group">
+            <TimeEntryForm userId={this.state.selectedUserId} />
+          </Row>
+          <LineDivider marginTop={"0rem"}/>
+          <Row className="form-group">
             <div className="col-md-6">
               <DateRangePicker
                 startDate={this.state.startDate} // momentPropTypes.momentObj or null,
@@ -245,16 +251,20 @@ class TimeEntries extends Component {
               />
             </div>
             <div className="col-md-6">
-              <Autosuggest 
-                suggestions={this.props.users.users}
-                onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
-                onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-                getSuggestionValue={getSuggestionValue}
-                renderSuggestion={renderSuggestion}
-                inputProps={inputProps}
-                onSuggestionSelected={this.onSuggestionSelected}
-                style={{height: "130px"}}
-              />
+              {(has_role("manager") || has_role("admin")) && 
+                  <Autosuggest 
+                    suggestions={this.props.users.users}
+                    onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+                    onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+                    defaultShouldRenderSuggestions={false}
+                    getSuggestionValue={getSuggestionValue}
+                    renderSuggestion={renderSuggestion}
+                    inputProps={inputProps}
+                    onSuggestionSelected={this.onSuggestionSelected}
+                    style={{height: "130px"}}
+                  />
+               }
+
             </div>
           </Row>
           <div id="times-entries-parent-holder">

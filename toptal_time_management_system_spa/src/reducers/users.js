@@ -1,7 +1,7 @@
 import actions from 'actions';
 import { updateCollection } from './utils'
 
-export const users = (state = {users: [], pagination: [], user: {}}, action) => {
+export const users = (state = {users: [], user: {}, pagination: [], errors: {}}, action) => {
   switch (action.type) {
     case actions.users.types.UPDATE_ITEM:
       var {id, collection} = action.payload
@@ -15,6 +15,10 @@ export const users = (state = {users: [], pagination: [], user: {}}, action) => 
     case actions.users.types.UPDATE_COLLECTION:
       state.users = action.payload.users.data
       state.pagination = action.payload.users.pagination
+      return { ...state }
+    case actions.users.types.UPDATE_ERRORS:
+      const { errors } = action.payload
+      state.errors = errors
       return { ...state }
     default:
       return state

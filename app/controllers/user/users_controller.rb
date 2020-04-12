@@ -17,7 +17,7 @@ class User::UsersController < ApplicationController
     if @user.save
       render json: @user, status: 201
     else
-      render json: @user.errors, status: 422
+      render json: @user, serializer: ErrorSerializer, status: 422
     end
   end
 
@@ -29,7 +29,7 @@ class User::UsersController < ApplicationController
     if @user.update_attributes(model_params)
       render json: @user, status: 200
     else
-      render json: @user.errors, status: 422
+      render json: @user, serializer: ErrorSerializer, status: 422
     end
   end
 
@@ -37,13 +37,14 @@ class User::UsersController < ApplicationController
     if @user.destroy
       head 204
     else
-      render json: @user.errors, status: 422
+      render json: @user, serializer: ErrorSerializer, status: 422
     end
   end
 
   private
     def model_params
-      params.require(:user).permit!
+      params[:user] = params[:user].except(:id)
+      return params.require(:user).permit!
     end
 
     def find_user

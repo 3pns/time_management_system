@@ -190,3 +190,26 @@ body {
 .react-autosuggest__suggestion--highlighted {
   background-color: #ddd;
 }
+
+.hide-numeric-arrows input[type=number]::-webkit-outer-spin-button,
+  input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* Firefox */
+.hide-numeric-arrows input[type=number] {
+  -moz-appearance: textfield;
+}
+
+#time_entry_form_date_picker {
+  padding: 3px;
+}
+
+.react-autosuggest__input {
+  width: 100% !important;
+}
+
+.react-autosuggest__suggestions-container {
+  width: 100% !important;
+}

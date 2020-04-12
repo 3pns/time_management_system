@@ -24,9 +24,9 @@ ActiveRecord::Schema.define(version: 2020_04_06_161028) do
 
   create_table "time_entries", force: :cascade do |t|
     t.bigint "user_id"
-    t.date "date"
-    t.bigint "duration"
-    t.string "note"
+    t.date "date", default: -> { "now()" }
+    t.bigint "duration", default: 0
+    t.string "note", default: ""
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["user_id"], name: "index_time_entries_on_user_id"
@@ -44,7 +44,8 @@ ActiveRecord::Schema.define(version: 2020_04_06_161028) do
 
   create_table "user_settings", force: :cascade do |t|
     t.bigint "user_id"
-    t.bigint "preferred_working_hours_per_day"
+    t.bigint "preferred_working_hours_per_day", default: 0, null: false
+    t.boolean "preferred_working_hours_per_day_enabled", default: false, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["user_id"], name: "index_user_settings_on_user_id"

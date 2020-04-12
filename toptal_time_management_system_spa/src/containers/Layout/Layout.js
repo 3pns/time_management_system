@@ -52,11 +52,12 @@ class Layout extends Component {
   signOut(e) {
     e.preventDefault()
     localStorage.setItem('access-token', '')
+    store.dispatch({type: actions.profile.types.UPDATE, payload: { profile: {}} });
     this.setState({}); // force rerender
   }
 
   render() {
-    if(!localStorage.getItem('access-token')){
+    if(!localStorage.getItem('access-token') && this.props.profile.id == null){
       return <Redirect to='/login' />
     }
     // build sidebar menu depending on permissions

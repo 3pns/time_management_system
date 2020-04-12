@@ -1,6 +1,8 @@
 import React, { Component, lazy, Suspense } from 'react';
 import ReactDOM from "react-dom";
 
+const allowedInput = [0,1,2,3,4,5,6,7,8,9]
+
 class DurationEditor extends React.Component {
 
   state = {
@@ -16,7 +18,6 @@ class DurationEditor extends React.Component {
   };
 
   componentDidMount(){
-    console.log(this.props)
     this.inputHourRef.focus();
     let seconds = this.props.value
     let hours = Math.floor(parseInt(this.props.value) / 3600)
@@ -27,10 +28,39 @@ class DurationEditor extends React.Component {
     if (isNaN(minutes)) {
       minutes = 0
     }
-    this.setState({
-      hours: hours,
-      minutes: minutes
-    })
+    this.inputHourRef.value = hours
+    this.inputMinuteRef.value = minutes
+  }
+
+  updateState = (params) => {
+    let { hours, minutes } = params
+
+    hours = parseInt(hours)
+    minutes = parseInt(minutes)
+
+    if(hours == null || isNaN(hours) ){
+      hours = this.state.hours
+    }
+    if(minutes == null || isNaN(minutes) ){
+      minutes = this.state.minutes
+    }
+    if(hours < 0){
+      hours = 0
+    } else if (hours > 24) {
+      hours = 24
+    }
+    if(minutes < 0){
+      minutes = 0
+    } else if (minutes > 59){
+      minutes = 59
+    }
+    if(hours == 24){
+      minutes = 0
+    }
+    this.state.hours = hours
+    this.state.minutes = minutes
+    this.inputHourRef.value = hours
+    this.inputMinuteRef.value = minutes
   }
 
   getStyle() {
@@ -40,11 +70,7 @@ class DurationEditor extends React.Component {
   }
 
   getValue() {
-    console.log("returning value")
-    console.log(this.state.hours)
-    console.log(this.state.minutes)
     let newValue = parseInt(this.state.hours*3600 + this.state.minutes*60)
-    console.log(newValue)
     return  { duration: newValue };
   }
 
@@ -63,8 +89,6 @@ class DurationEditor extends React.Component {
 
   handleKeyPress = ( event ) => {
     // do something, or not, with the keydown event, maybe event.preventDefault()
-    console.log("key press detected")
-    console.log(event)
     let activeElement = null
     let nextElement = null
     let stateKey = ""
@@ -87,21 +111,19 @@ class DurationEditor extends React.Component {
 
     switch (event.key) {
       case 'ArrowUp':
-        event.preventDefault(); // Let's stop this event.
-        event.stopPropagation(); // Really this time.        
-        console.log("ArrowUp")
+        event.preventDefault();
+        event.stopPropagation();     
         var obj = {}
         obj[stateKey] = stateValue + 1
-        this.setState(obj)
+        this.updateState(obj)
         return false
         break;
       case 'ArrowDown':
-        event.preventDefault(); // Let's stop this event.
-        event.stopPropagation(); // Really this time.     
-        console.log("ArrowUp")
+        event.preventDefault();
+        event.stopPropagation();
         var  obj = {}
         obj[stateKey] = stateValue - 1
-        this.setState(obj)
+        this.updateState(obj)
         return false
         break;
       case 'ArrowLeft':
@@ -111,42 +133,46 @@ class DurationEditor extends React.Component {
         nextElement.focus()
         break;
     }
+    if(allowedInput.includes(event.key)){
+      return true
+    }
   }
   inheritContainerStyles() {
     return true;
   }
 
-  onChangeNeverCalled = (e) => {
-    console.log("QQQQQQ")
-    console.log(e)
-  }
-
   render() {
     return (
       <div className="form-inline">
+        <span 
+          className="hide-numeric-arrows"
+          style={{
+          "position": "absolute",
+          "left": "50%"
+        }}>:</span>
         <input 
-          ref={this.setInputHourRef} 
+          ref={this.setInputHourRef}
+          name="hours"
           onKeyDown={this.handleKeyPress} 
           type="number" 
           min={0} 
-          max={23} 
+          max={24} 
           onBlur={this.props.onBlur} 
           className="form-control" 
-          style={{width: "50%"}} 
-          value={this.state.hours}
-          onChange={this.onChangeNeverCalled}
+          style={{width: "50%", borderRight: "none", "borderRadius": "0.25rem 0rem 0rem 0.25rem"}} 
+          onChange={(e) => this.updateState({hours: e.currentTarget.value})}
         />
         <input 
-          ref={this.setInputMinuteRef} 
+          ref={this.setInputMinuteRef}
+          name="secondss"
           onKeyDown={this.handleKeyPress} 
           type="number" 
           min={0} 
           max={59} 
           onBlur={this.props.onBlur} 
           className="form-control" 
-          style={{width: "50%"}} 
-          value={this.state.minutes}
-          onChange={this.onChangeNeverCalled}
+          style={{width: "50%", borderLeft: "none", "borderRadius": "0rem 0.25rem 0.25rem 0rem"}} 
+          onChange={(e) => this.updateState({minutes: e.currentTarget.value})}
         />
       </div>
     );

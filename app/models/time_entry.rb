@@ -4,7 +4,6 @@ class TimeEntry < ApplicationRecord
   validates :user, :presence => true
   validates :date, :presence => true
   validates :duration, :presence => true
-  validates :note, :presence => true
 
   validates_numericality_of :user_id
   validates_date :date

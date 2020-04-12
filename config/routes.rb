@@ -4,8 +4,9 @@ Rails.application.routes.draw do
 
   namespace :user do
     resource :profile, only: [:show, :update]
-    resources :user_settings, only: [:show, :update]
     resources :time_entries
-    resources :users
+    resources :users do
+      resource :user_settings, only: [:show, :update]
+    end
   end
 end

@@ -40,7 +40,7 @@ class Users extends Component {
   ActionsCells = (obj) => {
     return (
       <div >
-        <Link className="btn btn-success" to={"/users/" +obj.id}>Show</Link>
+        <Link className="btn btn-info" to={"/users/" +obj.id}>Show</Link>
         <Link className="btn btn-warning" to={"/users/" +obj.id+ "/edit"}>Edit</Link>
         <Button className="btn btn-danger" onClick={() => {this.deleteUserModal(obj.id)}}>Delete</Button>
       </div>
@@ -129,6 +129,7 @@ class Users extends Component {
               <h2>Users</h2>
             </div>
             <div className="col-md-4 float-right">
+              <Link className="btn btn-success float-right" to={"/users/new"}>New</Link>
             </div>
           </div>
         </CardHeader>

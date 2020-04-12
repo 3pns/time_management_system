@@ -1,5 +1,5 @@
 import { toast as rToast } from 'react-toastify';
-
+import store from 'store'
 const toast = (toastType, message) => {
   if(toastType == "success"){
     rToast.success(message, {
@@ -45,4 +45,17 @@ const toast = (toastType, message) => {
   }
 }
 
-export default toast
+const has_role = (role) => {
+  const state = store.getState();
+
+  if(state.profile == null || state.profile.roles == null){
+    return false
+  }
+  if (state.profile.roles.includes(role)){
+    return true
+  } else {
+    return false
+  }
+}
+
+export { toast, has_role }

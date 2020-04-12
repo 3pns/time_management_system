@@ -28,6 +28,8 @@ class TimeEntryPolicy < ApplicationPolicy
         scope.where(user_id: ids)
       elsif user.has_role?("user")
         scope.where(user_id: user.id)
+      else
+        TimeEntry.none
       end
     end
   end

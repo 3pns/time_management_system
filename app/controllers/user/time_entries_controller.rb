@@ -3,7 +3,6 @@ class User::TimeEntriesController < User::UserController
 
   # TODO add role base filtering with pundit
   def index
-    p "ASDSSS"
     @disable_pagination = params[:disable_pagination]
     @q = policy_scope(TimeEntry).ransack(params[:q])
     # if @disable_pagination
@@ -25,7 +24,7 @@ class User::TimeEntriesController < User::UserController
     if @time_entry.save
       render json: @time_entry, status: 201
     else
-      render json: @time_entry.errors, status: 422
+      render json: @time_entry, serializer: ErrorSerializer, status: 422
     end
 
   end
@@ -38,7 +37,7 @@ class User::TimeEntriesController < User::UserController
     if @time_entry.update_attributes(model_params)
       render json: @time_entry, status: 200
     else
-      render json: @time_entry.errors, status: 422
+      render json: @time_entry, serializer: ErrorSerializer, status: 422
     end
   end
 
@@ -46,12 +45,14 @@ class User::TimeEntriesController < User::UserController
     if @time_entry.destroy
       head 204
     else
-      render json: @time_entry.errors, status: 422
+      render json: @time_entry, serializer: ErrorSerializer, status: 422
     end
   end
 
   private
     def model_params
+      params[:time_entry] = params[:time_entry].except(:id)
+      params[:time_entry] = params[:time_entry].except(:user_id) if params[:action] == "update"
       params.require(:time_entry).permit!
     end
 

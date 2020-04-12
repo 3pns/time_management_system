@@ -1,6 +1,22 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Card, CardBody, CardGroup, Col, Container /*, Form*/, Input, InputGroup, InputGroupAddon, InputGroupText, Row, FormFeedback, Table, Badge } from 'reactstrap';
+import { 
+  Button, 
+  Card, 
+  CardBody, 
+  CardGroup, 
+  Col, 
+  Container, 
+  /* Form*/ 
+  Input, 
+  InputGroup, 
+  InputGroupAddon, 
+  InputGroupText, 
+  Row, 
+  FormFeedback, 
+  Table,
+  Badge 
+} from 'reactstrap';
 import { Formik, Field, Form/*, ErrorMessage*/ } from 'formik';
 import * as yup from 'yup';
 import BootstrapReduxAlert from 'components/BootstrapReduxAlert'

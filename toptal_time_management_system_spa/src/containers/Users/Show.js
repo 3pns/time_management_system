@@ -4,7 +4,8 @@ import {
   Button,
   Card,
   CardHeader,
-  CardBody
+  CardBody,
+  Row
 } from 'reactstrap';
 import DataTable from 'react-data-table-component';
 import { withRouter } from 'react-router';
@@ -25,8 +26,6 @@ class Show extends Component {
   }
 
   render() {
-    console.log("REREDINRING")
-    console.log(this.props)
     return (
       <Card>
         <CardHeader>
@@ -40,6 +39,19 @@ class Show extends Component {
         </CardHeader>
         <CardBody>
           <Profile user={this.props.user}/>
+          <Row >
+            <div className="col-lg-3"/>
+            <div className="col-lg-6">
+              <Row >
+              <div className="col-lg-6">
+              <Link className="btn btn-warning btn-block" to={"/users/" + this.props.user.id + "/edit" } >Edit</Link>
+              </div>
+              <div className="col-lg-6">
+              <Link className="btn btn-info btn-block" to={"/users"} >Return</Link>
+              </div>
+              </Row>
+            </div>
+          </Row>
         </CardBody>
       </Card>
     )

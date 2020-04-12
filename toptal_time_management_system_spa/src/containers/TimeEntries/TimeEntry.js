@@ -11,10 +11,9 @@ import { secondsToString, stringToSeconds } from './utils'
 import { put, takeEvery, all } from 'redux-saga/effects'
 import { SHOW_BOOTSTRAP_REDUX_MODAL } from 'components/BootstrapReduxModal/actions'
 import { Badge, Card, CardBody, CardHeader, Col, Pagination, PaginationItem, PaginationLink, Row, Table } from 'reactstrap';
-import TimePicker from 'react-time-picker';
 import moment from 'moment'
 import DurationEditor from './DurationEditor'
-import toast from 'services/utils'
+import { toast } from 'services/utils'
 
 const durationFormatter = (obj) => {
   console.log(obj)
@@ -65,15 +64,7 @@ class TimeEntry extends Component {
 
   loading = () => <div className="animated fadeIn pt-1 text-center">Loading...</div>
 
-  patcha = (a,b) => {
-    console.log("ADDD")
-    //console.log(obj)
-  }
-
   onGridRowsUpdated = obj => {
-    console.log("onGridRowsUpdated")
-    console.log(obj)
-    console.log(this.props)
     let i = obj.fromRow
     let time_entry = this.props.data.time_entries[i]
     if(obj.updated.note != null){
@@ -86,19 +77,13 @@ class TimeEntry extends Component {
         newDuration = 0
       }
       let maxValue = 86400 - (this.props.data.totalTime - previousDuration)
-      console.log(newDuration)
-      console.log(maxValue)
       if (newDuration > maxValue) {
         newDuration = maxValue
         toast("warning", "Oops, there are only 24 hours in a day, we had to adjust your time entry")
       }
-      //assert the value first
-      //this.props.data.totalTime
-
       time_entry.duration = newDuration
     }
     if(obj.updated.note != null || obj.updated.duration != null){
-      console.log(time_entry)
       store.dispatch({ type: actions.time_entries.types.PATCH , payload: {data:time_entry, id:time_entry.id }  })
     }
   };
@@ -111,7 +96,6 @@ class TimeEntry extends Component {
 
 
   render() {
-    console.log(this.props)
     let rows = []
     if(this.props.data.time_entries != null){
       rows = this.props.data.time_entries

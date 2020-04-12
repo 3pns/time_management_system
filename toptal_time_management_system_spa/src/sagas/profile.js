@@ -52,9 +52,11 @@ class Profile {
   static * get(action) {
      try { 
         const profile = yield call(api.profile.get);
-        profile.authenticated = true
-        if(profile.id != null){
+        if(profile && profile.id != null){
+          profile.authenticated = true
           yield put({type: actions.profile.types.UPDATE, payload: { profile: profile} });
+        } else {
+          yield put({type: actions.profile.types.UPDATE, payload: { profile: {authenticated: false}} });
         }
      } catch (e) {
         yield put({type: SHOW_BOOTSTRAP_REDUX_ALERT, payload: {message: e.message, color: "danger", visible: true}});
