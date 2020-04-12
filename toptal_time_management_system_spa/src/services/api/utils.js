@@ -45,16 +45,13 @@ const apiRequest = async (verb, url, jsonData = {}, updateJwt=false) => {
       // throw error if No Content or incorrect json
       data = await response.json();
     } catch (e) {
+      console.log(e)
     }
     // Unauthorized
     if (`${response.status}` === "401" ) {
       logoutUser()
       return data;
     }
-
-    // if (response.status >= 200 && response.status < 299 || response.status >= 422) {
-    //   return data;
-    // }
 
     if(updateJwt){
       for(let entry of response.headers.entries()) {
@@ -68,8 +65,6 @@ const apiRequest = async (verb, url, jsonData = {}, updateJwt=false) => {
     if (response.status >= 400 && response.status < 600) {
       var description = JSON.stringify(data)
       if (data.errors != null ) {
-        console.log("errors detected, returning errors")
-        console.log(data)
         return data; // form errors or other standard api errors
       }
       if (data.exception != null ) {
@@ -86,11 +81,11 @@ const apiRequest = async (verb, url, jsonData = {}, updateJwt=false) => {
       return data;
     }
   } catch (e) {
-    console.log(e);
-    if(e.status == 500 && e.toString().includes('must be logged in') ){
-      logoutUser()
+    if(e.toString().includes("Failed to fetch")){
+      toast('error', "Can't connect to the backend server, please check your internet connection. If this problem persist please try again later.")
+    } else {
+      toast('error', `Fatal error while connecting to the backend server : ${e.toString()}. If the problem persist please contact the developer.`)
     }
-    store.dispatch({type: 'SHOW_BOOTSTRAP_REDUX_ALERT', payload: {message: "api error: " + e, color: "danger"}});
   }
 }
 

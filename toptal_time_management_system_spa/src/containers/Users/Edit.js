@@ -28,45 +28,59 @@ import Avatar from 'react-avatar';
 import { LineDivider } from 'views'
 import api from 'services/api'
 import { toast } from 'services/utils'
+import { FormBuilder } from 'views'
 
 class Edit extends Component {
-  mounted = true;
-
   componentWillMount() {
     store.dispatch({type: actions.users.types.GET, payload: {updateItem: true, id: this.props.match.params.id}});
   }
 
-  onSubmit = (values, { setSubmitting, errors, setErrors }) => {
-    setTimeout(() => {
-      if(this.mounted){
-        setSubmitting(false);
-      }
-    }, 2000);
+  onDispatch = (values) => {
+    store.dispatch({type: actions.users.types.PATCH, payload: { data: { user: values}, id: this.props.user.id } });
+  }
 
-    try {
-      api.users.patch({data:{user: values}, id: this.props.user.id})
-      .then(response => {
-        if(this.mounted, response != null && response.error != null){
-          setErrors(response.error)
-        } else if (this.mounted, response != null && response.id != null) {
-          store.dispatch({type: actions.users.types.UPDATE_ITEM, payload: { user: response} });
-          toast("success", "User record was updated with success")
-        }
-      })
-    } catch(e) {
-      if(this.mounted){
-        setErrors(e)
-      }
+  validate = (values) => {
+    const errors = {};
+    if (!values.email) {
+      errors.email = 'Required';
+    } else if (
+      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
+    ) {
+      errors.email = 'Invalid email address';
     }
+    return errors;
   }
 
-  componentWillUnmount(){
-    this.mounted = false;
-  }
+  validationSchema = () => {
+    return yup.object().shape({
+    email: yup.string()
+      .required('Required'),
+    first_name: yup.string()
+      .required('Required'),
+    last_name: yup.string()
+      .required('Required')
+  })}
+
+  fields = [
+    {
+      label: "First Name",
+      type: "text",
+      name: "first_name"
+    },
+    {
+      label: "Last Name",
+      type: "text",
+      name: "last_name"
+    },
+    {
+      label: "Email",
+      type: "email",
+      name: "email",
+      placeholder: "user@example.com"
+    },
+  ]
 
   render() {
-    console.log("REREDINRING")
-    console.log(this.props)
     return (
       <Card>
         <CardHeader>
@@ -91,81 +105,20 @@ class Edit extends Component {
             <Row>
               <div className="col-lg-3"/>
               <div className="col-lg-6">
-                <Formik
+                <FormBuilder
                   initialValues={{ ...this.props.user }}
-                  validate={values => {
-                    const errors = {};
-                    if (!values.email) {
-                      errors.email = 'Required';
-                    } else if (
-                      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-                    ) {
-                      errors.email = 'Invalid email address';
-                    }
-                    return errors;
-                  }}
-
-                  validationSchema={yup.object().shape({
-                    email: yup.string()
-                      .required('Required'),
-                    first_name: yup.string()
-                      .required('Required'),
-                    last_name: yup.string()
-                      .required('Required')
-                  })}
-
+                  validate={this.validate}
+                  validationSchema={this.validationSchema}
+                  initialErrors={{...this.props.errors}}
                   onSubmit={this.onSubmit}
                   enableReinitialize={true}
-                >
-                  {({ isSubmitting, errors, touched }) => (
-                    <Form>
-                      <FormGroup>
-                        <Label htmlFor="first_name">First Name</Label>
-                        <Input 
-                          type="text" 
-                          placeholder="First Name" 
-                          autoComplete="First Name"
-                          name="first_name"
-                          tag={Field}
-                          invalid={errors.first_name && touched.first_name}
-                        />
-                        <FormFeedback>{errors.first_name}</FormFeedback>
-                      </FormGroup>
-                      <FormGroup>
-                        <Label htmlFor="first_name">Last Name</Label>
-                        <Input 
-                          type="text" 
-                          placeholder="Last Name" 
-                          autoComplete="Last Name"
-                          name="last_name"
-                          tag={Field}
-                          invalid={errors.last_name && touched.last_name}
-                        />
-                        <FormFeedback>{errors.last_name}</FormFeedback>
-                      </FormGroup>
-                      <FormGroup>
-                        <Label htmlFor="first_name">Email</Label>
-                        <Input 
-                          type="email" 
-                          placeholder="email@example.com" 
-                          autoComplete="Email"
-                          name="email"
-                          tag={Field}
-                          invalid={errors.email && touched.email}
-                        />
-                        <FormFeedback>{errors.email}</FormFeedback>
-                      </FormGroup>
-                      <Row >
-                        <div className="col-lg-6">
-                        <Button color="success" className="btn btn-success btn-block" type="submit" disabled={isSubmitting}>Save</Button>
-                        </div>
-                        <div className="col-lg-6">
-                          <Link className="btn btn-info btn-block" to={"/users/" + this.props.user.id  } >Return</Link>
-                        </div>
-                      </Row>
-                    </Form>
-                  )}
-                </Formik>
+                  submitButtonText= "Create"
+                  returnButtonText= "Return"
+                  returnButtonTo= "/users"
+                  fields={this.fields}
+                  errors={this.props.errors}
+                  onDispatch={this.onDispatch}
+                />
               </div>
             </Row>
           </div>
@@ -181,9 +134,9 @@ const mapStateToProps = state => {
     user = {
       email: '',
       first_name: '',
-      last_name: ''
+      last_name: '',
     }
   }
-  return {profile: state.profile, user: user}
+  return {profile: state.profile, user: user, errors: state.users.errors}
 }
 export default withRouter(connect(mapStateToProps)(Edit));

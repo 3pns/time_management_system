@@ -51,32 +51,32 @@ class New extends Component {
   }
 
   fields = [
-  {
-    label: "First Name",
-    type: "text",
-    name: "first_name"
-  },
-  {
-    label: "Last Name",
-    type: "text",
-    name: "last_name"
-  },
-  {
-    label: "Email",
-    type: "email",
-    name: "email",
-    placeholder: "user@example.com"
-  },
-  {
-    label: "Password",
-    type: "password",
-    name: "password"
-  },
-  {
-    label: "Password Confirmation",
-    type: "password_confirmation",
-    name: "password_confirmation"
-  },
+    {
+      label: "First Name",
+      type: "text",
+      name: "first_name"
+    },
+    {
+      label: "Last Name",
+      type: "text",
+      name: "last_name"
+    },
+    {
+      label: "Email",
+      type: "email",
+      name: "email",
+      placeholder: "user@example.com"
+    },
+    {
+      label: "Password",
+      type: "password",
+      name: "password"
+    },
+    {
+      label: "Password Confirmation",
+      type: "password_confirmation",
+      name: "password_confirmation"
+    },
   ]
 
   render() {
