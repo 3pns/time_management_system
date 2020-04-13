@@ -16,6 +16,7 @@ import {
 } from "react-router-dom";
 import 'react-dates/initialize';
 import { IndexBuilder } from 'views'
+import { has_role } from 'services/utils'
 
 class Users extends Component {
 
@@ -53,6 +54,13 @@ class Users extends Component {
   }
 
   render() {
+    let isAdmin = has_role("admin")
+    let hideEditButton = true
+    let hideDeleteButton = true
+    if (isAdmin){
+      hideEditButton = false
+      hideDeleteButton = false
+    }
     return (
       <Card>
         <CardHeader>
@@ -60,9 +68,16 @@ class Users extends Component {
             <div className="col-md-8">
               <h2>Users</h2>
             </div>
-            <div className="col-md-4 float-right">
-              <Link className="btn btn-success float-right" to={"/users/new"}>New</Link>
-            </div>
+            {
+              isAdmin
+              ?
+              <div className="col-md-4 float-right">
+                <Link className="btn btn-success float-right" to={"/users/new"}>New</Link>
+              </div>
+              :
+              <React.Fragment></React.Fragment>
+            }
+
           </div>
         </CardHeader>
         <CardBody>
@@ -74,6 +89,8 @@ class Users extends Component {
               deleteAction={actions.users.types.DELETE}
               onRefresh={this.onRefresh}
               resourceBasePath={'/users'}
+              hideEditButton={hideEditButton}
+              hideDeleteButton={hideDeleteButton}
             />
           </div>
         </CardBody>

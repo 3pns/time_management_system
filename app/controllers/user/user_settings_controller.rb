@@ -6,6 +6,7 @@ class User::UserSettingsController < User::UserController
   end
 
   def update
+    p "======="
     if @user_settings.update(model_params)
       render json: @user_settings, status: 200
     else
@@ -22,8 +23,7 @@ class User::UserSettingsController < User::UserController
     end 
 
     def find_user_settings
-      @user = policy_scope(User).find(params[:user_id])
-      authorize @user
-      @user_settings = @user.settings
+      @user_settings = policy_scope(UserSetting).find_by_user_id(params[:user_id])
+      authorize @user_settings
     end
 end

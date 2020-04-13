@@ -123,11 +123,7 @@ class FormBuilder extends Component {
     }
 
   }
-
-  touchedByEntity = (touched, name) => {
-
-  }
-
+  
   render() {
     const fields = this.props.fields
     console.log(this.props)

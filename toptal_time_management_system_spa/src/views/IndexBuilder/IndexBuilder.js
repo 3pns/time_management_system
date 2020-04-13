@@ -19,9 +19,27 @@ class IndexBuilder extends Component {
   ActionsCells = (obj) => {
     return (
       <div >
-        <Link className="btn btn-info" to={this.props.resourceBasePath + '/' + +obj.id}>View</Link>
-        <Link className="btn btn-warning" to={this.props.resourceBasePath + '/'  +obj.id+ "/edit"}>Edit</Link>
-        <Button className="btn btn-danger" onClick={() => {this.deleteUserModal(obj.id)}}>Delete</Button>
+        {
+          this.props.hideViewButton
+          ?
+          <React.Fragment></React.Fragment>
+          :
+          <Link className="btn btn-info" to={this.props.resourceBasePath + '/' + +obj.id}>View</Link>
+        }
+        {
+          this.props.hideEditButton
+          ?
+          <React.Fragment></React.Fragment>
+          :
+          <Link className="btn btn-warning" to={this.props.resourceBasePath + '/'  +obj.id+ "/edit"}>Edit</Link>
+        }
+        {
+          this.props.hideDeleteButton
+          ?
+          <React.Fragment></React.Fragment>
+          :
+          <Button className="btn btn-danger" onClick={() => {this.deleteUserModal(obj.id)}}>Delete</Button>
+        }
       </div>
     )
   }

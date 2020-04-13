@@ -1,7 +1,7 @@
 import { call, put } from 'redux-saga/effects'
 import api from 'services/api'
 import actions from 'actions'
-import { toast } from 'services/utils'
+import { toast, errorsToString } from 'services/utils'
 
 class TimeEntries {
 
@@ -30,8 +30,9 @@ class TimeEntries {
   static * create(action) {
      try { 
         const time_entry = yield call(api.time_entries.create, action.payload);
-        if (time_entry != null){
-          console.log(time_entry)
+        if (time_entry != null && time_entry.errors){
+          toast("error", errorsToString(time_entry.errors))
+        } else if (time_entry != null){
           yield put({type: actions.time_entries.types.UPDATE, payload: { time_entry: time_entry, id: time_entry.id }});
           toast("success", "Created time entry with success")
         }

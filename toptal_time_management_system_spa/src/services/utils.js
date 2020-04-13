@@ -101,4 +101,23 @@ const optionsFromArray = (array) => {
   return options
 }
 
-export { toast, has_role, optionsFromCollection, optionsFromArray, optionFromCollection }
+const errorsToString = (errors) => {
+  console.log(errors)
+  let errorsString = ""
+  if (Array.isArray(errors)){
+    errors.keys().map((errorString) => {
+      errorsString = `${errorsString} ${errorString} `
+    })
+  } else if(errors.constructor === Object){
+    Object.keys(errors).map((key) => {
+      errorsString = `${errorsString} ${key}: `
+      errors[key].map((errorString) => {
+        errorsString = `${errorsString} ${errorString} `
+      })
+    })
+  } 
+  errorsString = errorsString.replace(/[{}\[\]\"\']/g, '');
+  return errorsString
+}
+
+export { toast, has_role, optionsFromCollection, optionsFromArray, optionFromCollection, errorsToString }

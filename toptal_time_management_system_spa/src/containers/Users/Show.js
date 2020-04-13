@@ -16,6 +16,7 @@ import {
   Link
 } from "react-router-dom";
 import { Profile } from 'views'
+import { has_role } from 'services/utils'
 
 class Show extends Component {
 
@@ -42,14 +43,27 @@ class Show extends Component {
           <Row >
             <div className="col-lg-3"/>
             <div className="col-lg-6">
+              {
+                has_role("admin")
+                ?
               <Row >
-              <div className="col-lg-6">
-              <Link className="btn btn-warning btn-block" to={"/users/" + this.props.user.id + "/edit" } >Edit</Link>
-              </div>
-              <div className="col-lg-6">
-              <Link className="btn btn-info btn-block" to={"/users"} >Return</Link>
-              </div>
+                <div className="col-lg-6">
+                  <Link className="btn btn-warning btn-block" to={"/users/" + this.props.user.id + "/edit" } >Edit</Link>
+                </div>
+                <div className="col-lg-6">
+                  <Link className="btn btn-info btn-block" to={"/users"} >Return</Link>
+                </div>
               </Row>
+              :
+              <Row >
+                <div className="col-lg-3">
+                </div>
+                <div className="col-lg-6">
+                  <Link className="btn btn-info btn-block" to={"/users"} >Return</Link>
+                </div>
+              </Row>
+              }
+
             </div>
           </Row>
         </CardBody>
