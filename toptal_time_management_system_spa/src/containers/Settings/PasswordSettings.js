@@ -23,42 +23,48 @@ class PasswordSettings extends Component {
 
   validationSchema = () => {
     return yup.object().shape({
+    password: yup.string()
+      .min(6, 'Too Short!')
+      .required('Required')
+      .ensure(),
     password_confirmation: yup.string()
       .oneOf([yup.ref('password'), null], "Passwords don't match")
       .min(6, 'Too Short!')
       .required('Required')
-      .ensure(),
-    recaptcha: yup.string()
-      .required('Required')
-      .ensure(),
+      .ensure()
     })
   }
 
   fields = [
     {
+      label: "Current Password",
+      inputType: "password",
+      name: "current_password"
+    },
+    {
       label: "Password",
-      type: "password",
+      inputType: "password",
       name: "password"
     },
     {
       label: "Password Confirmation",
-      type: "password",
+      inputType: "password",
       name: "password_confirmation"
     }
   ]
 
   render() {
+    console.log(this.props)
     return (
       <div>
         <Row>
           <div className="col-lg-3"/>
           <div className="col-lg-6">
             <FormBuilder
-              initialValues={{ password: '', password_confirmation: '' }}
+              initialValues={{ current_password: '', password: '', password_confirmation: '' }}
               validate={this.validate}
               validationSchema={this.validationSchema}
               initialErrors={{...this.props.errors}}
-              onSubmit={this.onSubmit}
               enableReinitialize={true}
               submitButtonText= "Save"
               hideReturnButton={true}

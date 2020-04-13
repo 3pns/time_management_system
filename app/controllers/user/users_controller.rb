@@ -15,19 +15,25 @@ class User::UsersController < ApplicationController
   def create
     @user = User.new model_params
     if @user.save
-      render json: @user, status: 201
+      role = Role.find_by_name("user")
+      @user.roles << role
+      render json: @user, serializer: UserSerializer, status: 201
     else
       render json: @user, serializer: ErrorSerializer, status: 422
     end
   end
 
   def show
-    render json: @user, status: 200
+    render json: @user, serializer: UserSerializer, status: 200
   end
 
   def update
+    roles = Role.where(name: params[:user][:roles])
+    params[:user] = params[:user].except(:roles)
     if @user.update_attributes(model_params)
-      render json: @user, status: 200
+      @user.roles = roles
+      @user.save()
+      render json: @user, serializer: UserSerializer, status: 200
     else
       render json: @user, serializer: ErrorSerializer, status: 422
     end
@@ -43,8 +49,7 @@ class User::UsersController < ApplicationController
 
   private
     def model_params
-      params[:user] = params[:user].except(:id)
-      return params.require(:user).permit!
+      return params.require(:user).permit(:first_name, :last_name, :email, :roles, :manager_id, :password, :password_confirmation)
     end
 
     def find_user

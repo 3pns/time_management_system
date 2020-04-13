@@ -14,6 +14,7 @@ Profile.types.RESET_PASSWORD = 'RESET_PASSWORD';
 Profile.types.PATCH_NEW_PASSWORD = 'PATCH_NEW_PASSWORD';
 
 Profile.types.UPDATE = 'UPDATE_PROFILE';
+Profile.types.UPDATE_ERRORS = 'UPDATE_PROFILE_ERRORS';
 
 Profile.create = (values, { setSubmitting }) => {
 

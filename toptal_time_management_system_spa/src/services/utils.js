@@ -58,4 +58,47 @@ const has_role = (role) => {
   }
 }
 
-export { toast, has_role }
+// return object
+const optionFromCollection = (collection, keyValue, keysLabel, itemId) => {
+  let option = {}
+  collection.map((item) => {
+
+
+    if(item[keyValue] == itemId){
+      let label = ""
+      keysLabel.map((key) => {
+        label = `${label}${item[key]} `
+      })
+      return {value: item[keyValue], label: label}
+    }
+  })
+  return option
+}
+
+//return array
+const optionsFromCollection = (collection, keyValue, keysLabel, keyIn = null ) => {
+  let options = []
+  collection.map((item) => {
+    let label = ""
+    keysLabel.map((key) => {
+      label = `${label}${item[key]} `
+    })
+    if(keyIn && keyIn.length > 0 && keyIn.includes(item[keyValue])){
+      options.push({value: item[keyValue], label: label})
+    } else if (keyIn == null) {
+      options.push({value: item[keyValue], label: label})
+    }
+  })
+  return options
+}
+
+// broken
+const optionsFromArray = (array) => {
+  let options = []
+  array.map((item) => {
+    options.push({value: item, label: item})
+  })
+  return options
+}
+
+export { toast, has_role, optionsFromCollection, optionsFromArray, optionFromCollection }

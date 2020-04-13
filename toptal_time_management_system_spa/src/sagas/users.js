@@ -58,7 +58,7 @@ class Users {
      try { 
         let user = yield call(api.users.patch, action.payload);
         if (user.errors){
-          yield put({type: actions.users.types.UPDATE_ERRORS, payload: { errors: user }});
+          yield put({type: actions.users.types.UPDATE_ERRORS, payload: { errors: user.errors }});
           user = null
         }
         if (user != null){

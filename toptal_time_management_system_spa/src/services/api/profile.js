@@ -34,7 +34,7 @@ class Profile {
 
   static patchNewPassword = async (payload) => {
     var { data } = payload
-    return ApiPatch( BaseUrl + "/users/password", data);
+    return ApiPatch( BaseUrl + "/users", data);
   };
 }
 

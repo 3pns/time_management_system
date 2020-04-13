@@ -33,12 +33,12 @@ class TimeEntrySettings extends Component {
   fields = [
     {
       label: "Enable preferred working hours per day system",
-      type: "checkbox",
+      inputType: "checkbox",
       name: "preferred_working_hours_per_day_enabled"
     },
     {
       label: "Preferred working hours per day",
-      type: "number",
+      inputType: "number",
       name: "preferred_working_hours_per_day"
     }
   ]

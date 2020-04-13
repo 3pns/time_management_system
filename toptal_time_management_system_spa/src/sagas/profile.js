@@ -43,7 +43,7 @@ class Profile {
      try { 
         let profile = yield call(api.profile.patch, action.payload);
         if (profile.errors){
-          yield put({type: actions.profile.types.UPDATE_ERRORS, payload: { errors: profile }});
+          yield put({type: actions.profile.types.UPDATE_ERRORS, payload: { errors: profile.errors }});
           profile = null
         }
         if (profile != null){
@@ -58,13 +58,13 @@ class Profile {
   static * patchNewPassword(action) {
      try { 
         let profile = yield call(api.profile.patchNewPassword, action.payload);
+        console.log(profile)
         if (profile.errors){
-          yield put({type: actions.profile.types.UPDATE_ERRORS, payload: { errors: profile }});
+          console.log(actions.profile.types.UPDATE_ERRORS)
+          yield put({type: actions.profile.types.UPDATE_ERRORS, payload: { errors: profile.errors }});
           profile = null
-        }
-        if (profile != null){
+        } else if (profile != null){
           toast("success", "Password updated with success")
-          yield put({type: actions.profile.types.UPDATE, payload: { profile: profile} });
         }
      } catch (e) {
         toast("error", e.message)

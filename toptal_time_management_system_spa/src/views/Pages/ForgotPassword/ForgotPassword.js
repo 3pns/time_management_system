@@ -23,12 +23,9 @@ class ForgotPassword extends Component {
       }
     }, 2000);
      try {
-        console.log(values)
         api.profile.askNewPassword({data:{user: values}})
         .then(response => {
-          console.log(response)
           if(response != null && response.errors  != null ) {
-            console.log("updating errors")
             recaptchaRef.current.reset()
             setErrors(response.errors)
             //setFieldValue({field: 'recaptcha', value: ''})
@@ -38,7 +35,6 @@ class ForgotPassword extends Component {
         })
       } catch(e) {
         setErrors(e)
-        // or setStatus(transformMyApiErrors(e))
       }
   }
 
@@ -114,7 +110,7 @@ class ForgotPassword extends Component {
                             </InputGroup>
                             <Button type='submit' color="success" block disabled={isSubmitting}>Confirm</Button>
                             <Link to="/login">
-                              <Button color="primary" className="mt-3" block disabled={isSubmitting}>Return</Button>
+                              <Button color="primary" className="mt-3" block disabled={isSubmitting}>Go back to Login</Button>
                             </Link>
                           </Form>
                         )}

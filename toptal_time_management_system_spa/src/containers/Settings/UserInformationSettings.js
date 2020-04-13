@@ -46,17 +46,17 @@ class UserInformationSettings extends Component {
   fields = [
     {
       label: "First Name",
-      type: "text",
+      inputType: "text",
       name: "first_name"
     },
     {
       label: "Last Name",
-      type: "text",
+      inputType: "text",
       name: "last_name"
     },
     {
       label: "Email",
-      type: "email",
+      inputType: "email",
       name: "email",
       placeholder: "user@example.com"
     },

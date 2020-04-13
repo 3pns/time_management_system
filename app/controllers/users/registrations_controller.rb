@@ -19,10 +19,14 @@ class Users::RegistrationsController < Devise::RegistrationsController
       build_resource(sign_up_params)
       if verify_recaptcha(model: resource, response: recaptcha)
         resource.save
+        role = Role.find_by_name("user")
+        resource.roles << role
       end
     else
       build_resource(sign_up_params)
       resource.save
+      role = Role.find_by_name("user")
+      resource.roles << role
     end
     yield resource if block_given?
     if resource.persisted?

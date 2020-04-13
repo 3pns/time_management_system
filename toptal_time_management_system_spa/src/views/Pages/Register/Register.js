@@ -3,6 +3,7 @@ import { Button, Card, CardBody, CardFooter, Col, Container, Input, InputGroup, 
 import { Formik, Field, Form/*, ErrorMessage*/ } from 'formik';
 import * as yup from 'yup';
 import BootstrapReduxAlert from 'components/BootstrapReduxAlert'
+import { SHOW_BOOTSTRAP_REDUX_ALERT } from 'components/BootstrapReduxAlert/actions'
 import ReCAPTCHA from "react-google-recaptcha";
 import api from 'services/api'
 import actions from 'actions'
@@ -40,17 +41,12 @@ class Register extends Component {
             }
             recaptchaRef.current.reset()
             setErrors(response.errors)
-            //setFieldValue({field: 'recaptcha', value: ''})
-
-            
           } else if (response != null && response.id != null) {
-            // todo login and redirect user automatically
-            store.dispatch({type: actions.profile.types.UPDATE, payload: { profile: response} });
+            store.dispatch({type: SHOW_BOOTSTRAP_REDUX_ALERT, payload: { message: "Your account has been created with success ! Please sign in to your account", color: "success", visible: true }});
           }
         })
       } catch(e) {
         setErrors(e)
-        // or setStatus(transformMyApiErrors(e))
       }
   }
 
@@ -210,7 +206,7 @@ class Register extends Component {
                             </InputGroup>
                             <Button type='submit' color="success" block disabled={isSubmitting}>Create Account</Button>
                             <Link to="/login">
-                              <Button color="primary" className="mt-3" block disabled={isSubmitting}>Return</Button>
+                              <Button color="primary" className="mt-3" block disabled={isSubmitting}>Go back to Login</Button>
                             </Link>
                           </Form>
                         )}

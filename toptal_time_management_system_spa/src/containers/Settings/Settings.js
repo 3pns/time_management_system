@@ -36,7 +36,7 @@ class Settings extends Component {
   }
 
   render() {
-
+    console.log(this.props)
     return (
       <div >
         <Col xs="12" md="12" className="mb-4">
@@ -84,8 +84,7 @@ class Settings extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log(state.profile)
-
+  console.log(state.profile.id)
   let profile = {}
   if(state.profile.id){
     profile = state.profile
@@ -96,10 +95,11 @@ const mapStateToProps = state => {
       email: '',
       settings: {
         preferred_working_hours_per_day: 0,
-        preferred_working_hours_per_day_enable: false
+        preferred_working_hours_per_day_enabled: false
       }
     }
   }
+
   return { profile: profile, errors: state.users.errors, profileErrors: state.profile.errors }
 }
 export default withRouter(connect(mapStateToProps)(Settings));

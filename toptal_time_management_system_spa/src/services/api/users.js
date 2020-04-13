@@ -35,6 +35,11 @@ class Users {
     var { id, data } = payload
     return ApiPatch( BaseUrl + "/user/users/" + id + '/user_settings', data);
   };
+
+  static patchNewPassword  = async (payload) => {
+    var { id, data } = payload
+    return ApiPatch( BaseUrl + "/user/users/" + id + '/update_password', data);
+  };
 }
 
 export default Users;

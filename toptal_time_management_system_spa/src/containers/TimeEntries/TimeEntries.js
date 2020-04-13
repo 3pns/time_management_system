@@ -22,6 +22,7 @@ import Autosuggest from 'react-autosuggest';
 import { has_role } from 'services/utils'
 import TimeEntryForm from './TimeEntryForm'
 import { LineDivider } from 'views'
+import { UserAutoSuggest } from 'containers/utils'
 
 const columns = [
   {
@@ -52,43 +53,9 @@ const columns = [
 
 const falseFunc = ()=>false;
 
-const users_array = [
-  {
-    first_name: 'John',
-    last_name: 'Doe',
-    email: 'john@example.com',
-    id: 1
-  },
-  {
-    first_name: 'Johnny',
-    last_name: 'Doe',
-    email: 'john@example.com',
-    id: 2
-  },
-];
-
-
-
-function escapeRegexCharacters(str) {
-  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-}
-
-
-
-function getSuggestionValue(suggestion) {
-  return suggestion.first_name + " " + suggestion.last_name + " (" + suggestion.email + ")";
-}
-
-function renderSuggestion(suggestion) {
-  return (
-    <span>{suggestion.first_name + " " + suggestion.last_name + " (" + suggestion.email + ")" }</span>
-  );
-}
-
 class TimeEntries extends Component {
   constructor(props) {
     super(props);
-    // Don't call this.setState() here!
     let startDate = moment().subtract(7,'d')
     let endDate = moment()
     this.state = {
@@ -140,25 +107,8 @@ class TimeEntries extends Component {
     }
   }
 
-  onChange = (event, { newValue, method }) => {
-    this.setState({
-      searchValue: newValue
-    });
-    this.refresh()
-  };
-  
-  onSuggestionsFetchRequested = ({ value }) => {
-    store.dispatch({type: actions.users.types.ALL, payload: {search_by_fields: value, items: 10}});
-  };
-
-  onSuggestionsClearRequested = () => {
-    this.setState({
-      suggestions: []
-    });
-  };
-
-  onSuggestionSelected = (event, { suggestion, suggestionValue, suggestionIndex, sectionIndex, method }) => {
-    this.state.selectedUserId = suggestion.id
+  onUserSearchRefresh = (userId, newValue) => {
+    this.state.selectedUserId = userId
     this.refresh()
   }
 
@@ -205,12 +155,6 @@ class TimeEntries extends Component {
       },
     ];
 
-    const { searchValue, suggestions } = this.state;
-    const inputProps = {
-      placeholder: "Search for a user",
-      value: searchValue,
-      onChange: this.onChange
-    };
     if (this.state.selectedUserId == null && this.props.profile.id != null){
       this.state.selectedUserId = this.props.profile.id
       this.refresh()
@@ -256,17 +200,11 @@ class TimeEntries extends Component {
             </div>
             <div className="col-md-6">
               {(has_role("manager") || has_role("admin")) && 
-                  <Autosuggest 
-                    suggestions={this.props.users.users}
-                    onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
-                    onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-                    defaultShouldRenderSuggestions={false}
-                    getSuggestionValue={getSuggestionValue}
-                    renderSuggestion={renderSuggestion}
-                    inputProps={inputProps}
-                    onSuggestionSelected={this.onSuggestionSelected}
-                    style={{height: "130px"}}
-                  />
+                <UserAutoSuggest 
+                  customStyle={{height: "130px"}} 
+                  data={this.props.users.users} 
+                  onRefresh={this.onUserSearchRefresh} 
+                />
                }
 
             </div>
@@ -303,7 +241,6 @@ const mapStateToProps = state => {
   if(state.time_entries != null && state.time_entries.aggregated_time_entries != null){
     aggregated_time_entries = Object.values(state.time_entries.aggregated_time_entries)
   }
-  console.log(state.profile)
   return {profile: state.profile, time_entries: time_entries, aggregated_time_entries: aggregated_time_entries, users: state.users, user: state.user}
 }
 export default withRouter(connect(mapStateToProps)(TimeEntries));

@@ -20,8 +20,6 @@ class BootstrapReduxModal extends Component {
   }
 
   onConfirm = () => {
-  //confirm = function* () => {
-    console.log("onConfirm !!!")
     this.props.store.dispatch({ type: this.state.currentActionType , payload: this.state.currentActionparams })
     this.setState({
       hidden: true,
@@ -58,7 +56,6 @@ class BootstrapReduxModal extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log(state)
   if (state.BootstrapReduxModal != null){
     return { BootstrapReduxModal: state.BootstrapReduxModal };
   }

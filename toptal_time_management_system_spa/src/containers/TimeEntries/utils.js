@@ -11,9 +11,7 @@ const exportReportToHtml = function (time_entries, user, startDate, endDate){
   html_holder.appendChild(head_clone);
   let body_holder = document.createElement('body');
 
-  // body_holder.appendChild(time_entries_clone); 
   ReactDOM.render(<TimeEntriesReport time_entries={time_entries} user={user} startDate={startDate} endDate={endDate} /> , body_holder)
-  //body_holder.appendChild( );
 
   html_holder.appendChild(body_holder);
   element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(html_holder.innerHTML));

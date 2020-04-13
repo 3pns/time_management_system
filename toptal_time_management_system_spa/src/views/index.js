@@ -5,6 +5,7 @@ import LineDivider from './LineDivider'
 import { New, Edit, MyIndex } from './Admin'
 import FormBuilder from './FormBuilder'
 import IndexBuilder from './IndexBuilder'
+import Spinner from './Spinner'
 const Index = MyIndex
 
 export {
@@ -18,6 +19,7 @@ export {
   Edit,
   Index,
   FormBuilder,
-  IndexBuilder
+  IndexBuilder,
+  Spinner
 };
 
