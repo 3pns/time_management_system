@@ -5,4 +5,5 @@ class ApplicationController < ActionController::API
   
   respond_to :json
   responder :my_application
+
 end

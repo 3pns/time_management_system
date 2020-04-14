@@ -123,7 +123,7 @@ class TimeEntries extends Component {
 
       {
         // green
-        when: row => pwhpd_enabled && pwhpd != null && row.totalTime > pwhpd * 3600,
+        when: row => pwhpd_enabled && pwhpd != null && row.totalTime >= pwhpd * 3600,
         style: {
           backgroundColor: 'rgba(63, 195, 128, 0.9)',
           color: 'black',
@@ -134,7 +134,7 @@ class TimeEntries extends Component {
       },
       {
         // red
-        when: row => pwhpd_enabled && pwhpd != null && row.totalTime <= pwhpd * 3600,
+        when: row => pwhpd_enabled && pwhpd != null && row.totalTime < pwhpd * 3600,
         style: {
           backgroundColor: 'rgba(248, 108, 107, 0.9)',
           color: 'black',

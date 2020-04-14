@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   namespace :user do
     resource :profile, only: [:show, :update]
     resources :time_entries
+    resources :invitations
     resources :users do
       resource :user_settings, only: [:show, :update]
       post :update_password

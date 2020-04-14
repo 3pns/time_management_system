@@ -20,6 +20,7 @@
     "moment-duration-format": "^2.3.2",
     "namor": "^2.0.2",
     "node-sass": "^4.13.1",
+    "query-string": "^6.12.1",
     "react": "^16.13.1",
     "react-autosuggest": "^10.0.0",
     "react-avatar": "^3.9.2",

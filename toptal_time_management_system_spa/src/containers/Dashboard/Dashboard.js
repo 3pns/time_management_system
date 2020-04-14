@@ -13,9 +13,9 @@ class Dashboard extends Component {
     console.log("in dashboard")
     console.log(this.props)
     return (
-      <div >
+      <h3 >
       { "Welcome back " + this.props.profile.first_name + " " + this.props.profile.last_name}
-      </div>
+      </h3>
     )
   }
 }

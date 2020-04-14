@@ -6,7 +6,6 @@ class User::UserSettingsController < User::UserController
   end
 
   def update
-    p "======="
     if @user_settings.update(model_params)
       render json: @user_settings, status: 200
     else

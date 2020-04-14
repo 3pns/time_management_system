@@ -10,10 +10,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_06_161028) do
+ActiveRecord::Schema.define(version: 2020_04_14_001321) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pgcrypto"
   enable_extension "plpgsql"
+
+  create_table "invitations", force: :cascade do |t|
+    t.uuid "invitation_token", default: -> { "gen_random_uuid()" }, null: false
+    t.string "email", default: "", null: false
+    t.string "roles", default: [], array: true
+    t.boolean "invite_as_subordinate", default: false, null: false
+    t.datetime "invitation_accepted_at"
+    t.bigint "invited_by_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["email"], name: "index_invitations_on_email", unique: true
+    t.index ["invitation_token"], name: "index_invitations_on_invitation_token", unique: true
+    t.index ["invited_by_id"], name: "index_invitations_on_invited_by_id"
+  end
 
   create_table "roles", force: :cascade do |t|
     t.string "name"
@@ -80,6 +95,7 @@ ActiveRecord::Schema.define(version: 2020_04_06_161028) do
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
 
+  add_foreign_key "invitations", "users", column: "invited_by_id"
   add_foreign_key "time_entries", "users", on_delete: :cascade
   add_foreign_key "user_roles", "roles", on_delete: :cascade
   add_foreign_key "user_roles", "users", on_delete: :cascade

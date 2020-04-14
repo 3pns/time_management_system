@@ -37,7 +37,6 @@ class FormBuilder extends Component {
   componentDidUpdate = () => {
 
     const { errors } = this.props;
-    console.log(errors)
     if(this.formRef){
       this.formRef.setErrors(errors);
     }
@@ -46,26 +45,22 @@ class FormBuilder extends Component {
   onSubmit = (values, { setSubmitting, errors, setErrors }) => {
 
     // serialize all multi forms values to array of data
-    console.log(values)
     this.props.fields.map((field) => {
       // multi select
       if(field.inputType == "select" && field.multiple && values[field.name]){
-        console.log("isFieldMultiple")
-        console.log(field.name)
         values[field.name] = values[field.name].map((pair) => {
-          return pair.value
+          if(pair){
+            return pair.value
+          }
         })
       // standard select
       } else if (field.inputType == "select"){
-        console.log("isRegularSelect")
-        console.log(field.name)
         if(values[field.name]){
           values[field.name] = values[field.name].value
         }
         
       }
     })
-    console.log(values)
 
     setTimeout(() => {
       if(this.mounted){
@@ -76,33 +71,26 @@ class FormBuilder extends Component {
   }
 
   onSelectChange = (field, option, setFieldValue) => {
-    console.log(field)
-    console.log(option)
     setFieldValue(field.name, option )
   }
 
   parseErrorsToString = (errors, field) => {
-    console.log(errors)
-    console.log(field)
-    let fieldErrors = ""
-    let errorsArray = []
-    if(Array.isArray(errors[field.name])){
-      console.log("11111")
-      errorsArray = errors[field.name]
+    var fieldErrors = ""
+    var errorsArray = []
+    // formik errors
+    if (typeof errors[field.name] === 'string' || errors[field.name] instanceof String){
+      errorsArray.push(errors[field.name])
+    // api errors
+    } else if(Array.isArray(errors[field.name])){
+      errorsArray.push(errors[field.name])
     } else if (Array.isArray(errors[field.name + '_id'])){
-      console.log("22222")
-      errorsArray = errors[field.name + '_id']
+      errorsArray.push(errors[field.name + '_id'])
     } else if (Array.isArray(errors[field.name.replace('_id', '')])){
-      console.log("22222")
-      errorsArray = errors[field.name.replace('_id', '')]
+      errorsArray.push(errors[field.name.replace('_id', '')])
     }
-    console.log(errorsArray)
-
     errorsArray.map((error) =>{
-      console.log(error)
       fieldErrors = fieldErrors + " "+ error
     })
-    console.log(fieldErrors)
     return fieldErrors
   }
 
@@ -112,13 +100,9 @@ class FormBuilder extends Component {
   }
 
   containEntity = (collection, name) => {
-    console.log(collection)
-    console.log(name)
     if(collection[name] || collection[name + '_id'] || collection[name.replace('_id', '')]){
-      console.log("TRUE")
       return true
     } else {
-      console.log("FALSE")
       return false
     }
 
@@ -126,7 +110,6 @@ class FormBuilder extends Component {
   
   render() {
     const fields = this.props.fields
-    console.log(this.props)
     return (  
       <Formik
         innerRef={this.setFormRef}
@@ -161,8 +144,6 @@ class FormBuilder extends Component {
               }
 
               // for each string in the array on the top build the default values that ill be populates
-              console.log(field)
-              console.log(errors)
               return (
                 <FormGroup key={key} >
                   <Label htmlFor={field.name}>{field.label}</Label>

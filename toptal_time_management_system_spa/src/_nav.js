@@ -7,14 +7,19 @@ export default {
 
     },
     {
+      name: 'Time Entries',
+      url: '/time_entries',
+      icon: 'icon-hourglass',
+    },
+    {
       name: 'Users',
       url: '/users',
       icon: 'icon-user',
     },
     {
-      name: 'Time Entries',
-      url: '/time_entries',
-      icon: 'icon-hourglass',
+      name: 'Invitations',
+      url: '/invitations',
+      icon: 'icon-user',
     },
     {
       name: 'Settings',

@@ -26,13 +26,16 @@ class User < ApplicationRecord
                     tsearch: { prefix: true }
                   }
 
-
   def roles_a
     self.roles.map{|role| role.name}
   end
 
   def has_role?(role)
     self.roles_a.include?(role)
+  end
+
+  def send_devise_notification(notification, *args)
+    devise_mailer.send(notification, self, *args).deliver_later
   end
 
   private

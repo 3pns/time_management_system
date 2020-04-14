@@ -32,6 +32,7 @@ import Dashboard from '../Dashboard'
 import Settings from '../Settings'
 import TimeEntries from '../TimeEntries'
 import Users from '../Users'
+import Invitations from '../Invitations'
 
 const Aside = React.lazy(() => import('./Aside'));
 const Footer = React.lazy(() => import('./Footer'));
@@ -70,16 +71,11 @@ class Layout extends Component {
       url: '/dashboard',
       icon: 'icon-speedometer',
     })
+
+    console.log(this.props)
     
     if(this.props.profile.id != null){
       let profile = this.props.profile
-      if(profile.permissions["User.show?"]){
-        navigation.items.push({
-          name: 'Users',
-          url: '/users',
-          icon: 'icon-user',
-        })
-      }
       if(profile.permissions["TimeEntry.show?"]){
         navigation.items.push({
           name: 'Time Entries',
@@ -87,7 +83,20 @@ class Layout extends Component {
           icon: 'icon-hourglass',
         })
       }
-    }
+      if(profile.permissions["User.show?"]){
+        navigation.items.push({
+          name: 'Users',
+          url: '/users',
+          icon: 'icon-user',
+        })
+      }
+      if(profile.permissions["Invitation.show?"]){
+        navigation.items.push({
+          name: 'Invitations',
+          url: '/invitations',
+          icon: 'icon-paper-plane',
+        })
+      }    }
     navigation.items.push({
       name: 'Settings',
       url: '/settings',
@@ -131,6 +140,7 @@ class Layout extends Component {
                   <Route exact path="/dashboard" name="Dashboard" render={props => <Dashboard {...props} />} />
                   <Route path="/users" name="Users" render={props => <Users {...props} />} />
                   <Route path="/time_entries" name="Time Entries" render={props => <TimeEntries {...props} />} />
+                  <Route path="/invitations" name="Invitations" render={props => <Invitations {...props} />} />
                   <Route path="/settings" name="Settings" render={props => <Settings {...props} />} />
                   <Redirect from="/" to="/dashboard" />
                 </Switch>

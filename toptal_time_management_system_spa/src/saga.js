@@ -26,6 +26,12 @@ function* mySaga() {
   yield takeEvery(actions.time_entries.types.GET, sagas.time_entries.get)
   yield takeEvery(actions.time_entries.types.PATCH, sagas.time_entries.patch)
   yield takeEvery(actions.time_entries.types.DELETE, sagas.time_entries.delete)
+
+  // invitations
+  yield takeEvery(actions.invitations.types.CREATE, sagas.invitations.create)
+  yield takeEvery(actions.invitations.types.ALL, sagas.invitations.all)
+  yield takeEvery(actions.invitations.types.GET, sagas.invitations.get)
+  yield takeEvery(actions.invitations.types.DELETE, sagas.invitations.delete)
 }
 
 

@@ -19,8 +19,19 @@ class Users::RegistrationsController < Devise::RegistrationsController
       build_resource(sign_up_params)
       if verify_recaptcha(model: resource, response: recaptcha)
         resource.save
-        role = Role.find_by_name("user")
-        resource.roles << role
+        invitation = Invitation.find_by_invitation_token(params[:token])
+        p invitation
+        if invitation
+          resource.manager = invitation.invited_by if invitation.invite_as_subordinate
+          roles = Role.where(name: invitation.roles)
+          resource.roles = roles
+          resource.save()
+          invitation.invitation_accepted_at = DateTime.now
+          invitation.save()
+        else
+          role = Role.find_by_name("user")
+          resource.roles << role
+        end
       end
     else
       build_resource(sign_up_params)
@@ -74,7 +85,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # If you have extra params to permit, append them to the sanitizer.
   def configure_sign_up_params
-    devise_parameter_sanitizer.permit(:sign_up, keys: [:first_name, :last_name, :recaptcha])
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:first_name, :last_name, :recaptcha, :token])
   end
 
   # If you have extra params to permit, append them to the sanitizer.

@@ -8,7 +8,7 @@ class ProfileSerializer < ActiveModel::Serializer
   end
 
   def permissions
-    classes = [TimeEntry, User, UserSetting]
+    classes = [TimeEntry, User, UserSetting, Invitation]
     permissions = { }                             
     classes.each do |klass|
       obj = klass.new

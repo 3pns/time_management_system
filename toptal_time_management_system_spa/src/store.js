@@ -1,15 +1,12 @@
 import { combineReducers, createStore, applyMiddleware } from 'redux';
 //import { Provider } from 'react-redux';
-import { profile, users, time_entries } from 'reducers';
+import { profile, users, time_entries, invitations } from 'reducers';
 import BootstrapReduxAlert from 'components/BootstrapReduxAlert/reducers'
 import BootstrapReduxModal from 'components/BootstrapReduxModal/reducers'
 
 // redux saga
 import createSagaMiddleware from 'redux-saga'
 import mySaga from 'saga'
-
-//alerts
-
 const sagaMiddleware = createSagaMiddleware()
 
 
@@ -19,7 +16,8 @@ export const store = createStore(
     BootstrapReduxModal,
     profile,
     users,
-    time_entries
+    time_entries,
+    invitations
   //  someOtherReducer 
   }),
   applyMiddleware(sagaMiddleware)
@@ -29,13 +27,3 @@ export const store = createStore(
 sagaMiddleware.run(mySaga)
 
 export default store;
-
-// copies from app/store
-// import { configureStore } from '@reduxjs/toolkit';
-// import counterReducer from '../features/counter/counterSlice';
-
-// export default configureStore({
-//   reducer: {
-//     counter: counterReducer,
-//   },
-// });

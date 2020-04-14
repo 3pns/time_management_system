@@ -12,6 +12,10 @@ Devise.setup do |config|
 
   config.jwt do |jwt|
     jwt.secret = ENV['DEVISE_JWT_SECRET_KEY']
+    jwt.expiration_time = ENV['JWT_EXPIRATION_TIME'].to_i
+    jwt.dispatch_requests = [
+      ['POST', %r{^/users/renew$}],
+    ]
   end
 
   # ==> Controller configuration

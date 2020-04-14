@@ -13,16 +13,19 @@ import { connect } from 'react-redux';
 import TimeEntrySettings from './TimeEntrySettings'
 import UserInformationSettings from './UserInformationSettings'
 import PasswordSettings from './PasswordSettings'
+const queryString = require('query-string');
 
 class Settings extends Component {
 
   constructor(props) {
     super(props);
-
+    const parsedHash = queryString.parse(this.props.location.search);
+    console.log(parsedHash)
     this.toggle = this.toggle.bind(this);
     this.state = {
       activeTab: new Array(4).fill('time_entry'),
     };
+
   }
 
   loading = () => <div className="animated fadeIn pt-1 text-center">Loading...</div>
@@ -36,7 +39,7 @@ class Settings extends Component {
   }
 
   render() {
-    console.log(this.props)
+    console.log(  )
     return (
       <div >
         <Col xs="12" md="12" className="mb-4">
@@ -62,7 +65,7 @@ class Settings extends Component {
                 active={this.state.activeTab[0] === 'password'}
                 onClick={() => { this.toggle(0, 'password'); }}
               >
-                Password
+                Change Password
               </NavLink>
             </NavItem>
           </Nav>

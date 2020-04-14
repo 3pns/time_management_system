@@ -1,0 +1,6 @@
+<p>Hi !</p>
+
+<p>You have been invited by <%= @sender %> to join the Time Management System. Sign up and get started today ! To accept this invitation please <%= link_to 'click here', "#{@front_end_base_url}/register?token=#{@invitation_token}" %> or click on the link below and follow the account creation step.</p>
+
+<p><%= link_to "#{@front_end_base_url}/register?token=#{@invitation_token}", "#{@front_end_base_url}/register?token=#{@invitation_token}" %>
+</p>

@@ -9,6 +9,7 @@ import api from 'services/api'
 import actions from 'actions'
 import store from 'store'
 import { Link } from 'react-router-dom';
+const queryString = require('query-string');
 
 const recaptchaRef = React.createRef();
 const recaptchaSiteKey = process.env.REACT_APP_RECAPTCHA_SITE_KEY
@@ -26,8 +27,8 @@ class Register extends Component {
       }
     }, 2000);
      try {
-        console.log(values)
-        api.profile.create({data:{user: values}})
+        const parsedHash = queryString.parse(this.props.location.search);
+        api.profile.create({data:{user: values, token: parsedHash.token}})
         .then(response => {
           console.log(response)
           if(response != null && response.errors  != null ) {
@@ -55,6 +56,7 @@ class Register extends Component {
   }
 
   render() {
+
     return (
       <div className="app flex-row align-items-center">
         <Container>
