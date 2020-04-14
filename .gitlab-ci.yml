@@ -30,6 +30,7 @@ variables:
   BUNDLE_PATH: vendor/bundle
   GEM_HOME: vendor/bundle
   BUNDLER_VERSION: 2.1.4
+  DOCKER_TLS_CERTDIR: ""
 
 before_script:
   - ls -al
