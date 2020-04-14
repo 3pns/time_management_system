@@ -17,7 +17,8 @@ services:
 - docker:19.03.8-dind
 
 variables:
-  RAILS_IMAGE: $GITLAB_REGISTRY_URL/3pns/time_management_system:0.0.1.$CI_PIPELINE_IID
+  RAILS_IMAGE: $GITLAB_REGISTRY_URL/3pns/time_management_system:api-0.0.1.$CI_PIPELINE_IID
+  SPA_IMAGE: $GITLAB_REGISTRY_URL/3pns/time_management_system:spa-0.0.1.$CI_PIPELINE_IID
 #  RAILS_LATEST_IMAGE: $GITLAB_REGISTRY_URL/hydrodigit/time_management_system:latest
   PROD_CURRENT: 3pns/time_management_system:0.0.1.$CI_PIPELINE_IID
 #  PROD_LATEST: 3pns/time_management_system:latest
@@ -54,7 +55,7 @@ stages:
   - test
   - release
 
-build:
+build_api:
   stage: build
   tags:
     - build
@@ -63,6 +64,20 @@ build:
 #    - docker build --cache-from $RAILS_LATEST_IMAGE -t $RAILS_IMAGE .
     - docker build -t $RAILS_IMAGE .
     - docker push $RAILS_IMAGE
+  only:
+    - master
+    - tags
+
+build_front:
+  stage: build
+  tags:
+    - build
+  script:
+#    - docker pull $RAILS_LATEST_IMAGE
+#    - docker build --cache-from $RAILS_LATEST_IMAGE -t $RAILS_IMAGE .
+    - cd time_management_system_spa
+    - docker build -t $SPA_IMAGE .
+    - docker push $SPA_IMAGE
   only:
     - master
     - tags

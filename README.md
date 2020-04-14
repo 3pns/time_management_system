@@ -6,7 +6,7 @@ Same as usual
 
 ## front end React SPA
 
-root folder located in time_management_system_spa
+the root folder located in time_management_system_spa
 
 ## Folder structure
 This project is organized by file types. While less common than grouping by features it is
@@ -27,13 +27,15 @@ https://reactjs.org/docs/faq-structure.html
 
 # Code Conventions
 
-# successful queries
+DRY
 
+## successful queries
 
-POST/PUT/PATCH : must return the updated object
+POST/PUT/PATCH : must return the updated 
+serialized
+ object
 
-
-# queries with errors
+## queries with errors
 
 Must follow the pattern below :
 
@@ -45,11 +47,61 @@ Must follow the pattern below :
     }
 }
 
+## pagination
+
+{ 
+  data: { ...mySerializedData }
+  pagination: { ...myPaginationData }
+}
+
+# Development
+
+## Setup the environment
+
+install rvm : https://rvm.io/
+
+rvm install 2.6.6
+gem install bundler
+bundle install
+rails s
+
+## Create and seed the database
+
+rails db:create
+rails db:migrate
+PDD=true rails db:seed
+
 # Deployment
 
 ## rails backend
 
-## Environment variables required by the Docker image
+## Requirements
+- Ruby 2.6.6
+- Rails 6.0.2
+- Postgresql 11.4
 
-DEVISE_JWT_SECRET_KEY
-MAILER_DEVISE_SENDER
+## Environment variables required
+
+DEVISE_JWT_SECRET_KEY, 
+MAILER_DEVISE_SENDER, 
+POSTGRES_HOST, 
+POSTGRES_PASSWORD, 
+POSTGRES_USER, 
+SECRET_KEY_BASE, 
+SMTP_PASSWORD, 
+SMTP_USERNAME
+
+RECAPTCHA_SITE_KEY=~
+RECAPTCHA_SECRET_KEY=~
+RECAPTCHA_ENABLED=~
+FRONT_END_BASE_URL=~
+JWT_EXPIRATION_TIME=~
+
+time_management_system_production
+
+
+## Database
+
+CREATE USER time_management_system_production WITH PASSWORD '~';
+create database time_management_system_production;
+grant all privileges on database time_management_system_production to time_management_system_production;
