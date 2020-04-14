@@ -65,18 +65,19 @@ class TimeEntry extends Component {
   loading = () => <div className="animated fadeIn pt-1 text-center">Loading...</div>
 
   onGridRowsUpdated = obj => {
-    console.log("onGridRowsUpdated")
-    console.log(obj)
     let i = obj.fromRow
     let time_entry = this.props.data.time_entries[i]
+    let dispatchOk = true
     if(obj.updated.note != null){
       time_entry.note = obj.updated.note
     }
     if(obj.updated.duration != null){
       let newDuration = obj.updated.duration
       let previousDuration = time_entry.duration
-      if (newDuration < 0){
-        newDuration = 0
+      if (newDuration <= 0){
+        toast("error", "duration: must be greater than or equal to 1")
+        newDuration = previousDuration
+        dispatchOk = false
       }
       let maxValue = 86400 - (this.props.data.totalTime - previousDuration)
       if (newDuration > maxValue) {
@@ -85,7 +86,7 @@ class TimeEntry extends Component {
       }
       time_entry.duration = newDuration
     }
-    if(obj.updated.note != null || obj.updated.duration != null){
+    if(obj.updated.note != null || obj.updated.duration != null && dispatchOk){
       store.dispatch({ type: actions.time_entries.types.PATCH , payload: {data: {time_entry: time_entry}, id:time_entry.id }  })
     }
   };
