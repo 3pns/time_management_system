@@ -65,6 +65,8 @@ class TimeEntry extends Component {
   loading = () => <div className="animated fadeIn pt-1 text-center">Loading...</div>
 
   onGridRowsUpdated = obj => {
+    console.log("onGridRowsUpdated")
+    console.log(obj)
     let i = obj.fromRow
     let time_entry = this.props.data.time_entries[i]
     if(obj.updated.note != null){
@@ -84,8 +86,6 @@ class TimeEntry extends Component {
       time_entry.duration = newDuration
     }
     if(obj.updated.note != null || obj.updated.duration != null){
-      console.log(this.state)
-      console.log(this.props)
       store.dispatch({ type: actions.time_entries.types.PATCH , payload: {data: {time_entry: time_entry}, id:time_entry.id }  })
     }
   };

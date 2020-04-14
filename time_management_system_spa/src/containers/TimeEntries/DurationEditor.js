@@ -5,10 +5,22 @@ const allowedInput = [0,1,2,3,4,5,6,7,8,9]
 
 class DurationEditor extends React.Component {
 
-  state = {
-    hours: 0,
-    minutes: 0
-  }
+  constructor(props) {
+  super(props);
+  let hours = Math.floor(parseInt(this.props.value) / 3600)
+  let minutes = Math.floor((parseInt(this.props.value) - (3600 * hours)) / 60)
+    if(isNaN(hours)){
+      hours = 0
+    }
+    if (isNaN(minutes)) {
+      minutes = 0
+    }
+    this.state = {
+      hours: hours,
+      minutes: minutes
+    }
+}
+
   setInputHourRef = (input) => {
     this.inputHourRef  = input;
   };
@@ -19,21 +31,8 @@ class DurationEditor extends React.Component {
 
   componentDidMount(){
     this.inputHourRef.focus();
-    console.log("DIDMOUNY")
-    console.log(this.props)
-    let seconds = this.props.value
-    let hours = Math.floor(parseInt(this.props.value) / 3600)
-    let minutes = Math.floor((parseInt(this.props.value) - (3600 * hours)) / 60)
-    console.log(hours)
-    console.log(minutes)
-    if(isNaN(hours)){
-      hours = 0
-    }
-    if (isNaN(minutes)) {
-      minutes = 0
-    }
-    this.inputHourRef.value = hours
-    this.inputMinuteRef.value = minutes
+    this.inputHourRef.value = this.state.hours
+    this.inputMinuteRef.value = this.state.minutes
   }
 
   updateState = (params) => {
