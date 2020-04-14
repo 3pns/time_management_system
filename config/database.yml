@@ -6,15 +6,15 @@ default: &default
 
 development:
   <<: *default
-  database: toptal_time_management_system_development
+  database: time_management_system_development
 
 test:
   <<: *default
-  database: toptal_time_management_system_test
+  database: time_management_system_test
 
 staging:
   <<: *default
-  database: toptal_time_management_system_staging
+  database: time_management_system_staging
   host: <%= ENV['POSTGRES_HOST'] %>
   username: <%= ENV['POSTGRES_USER'] %>
   password: <%= ENV['POSTGRES_PASSWORD'] %>
@@ -22,7 +22,7 @@ staging:
 
 production:
   <<: *default
-  database: toptal_time_management_system_production
+  database: time_management_system_production
   host: <%= ENV['POSTGRES_HOST'] %>
   username: <%= ENV['POSTGRES_USER'] %>
   password: <%= ENV['POSTGRES_PASSWORD'] %>

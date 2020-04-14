@@ -9,7 +9,8 @@ ENV PATH="/opt/time_management_system/vendor/bundle/bin:${PATH}"
 RUN apk update
 RUN apk add --no-cache libxml2-dev postgresql-dev nodejs libcurl
 WORKDIR $RAILS_ROOT
-COPY vendor/bundle /opt/time_management_system/vendor/bundle
+RUN gem install bundler
+RUN bundle install --jobs $(nproc)
 COPY . .
 EXPOSE 3000
 CMD ["puma", "-C", "config/puma.rb"]

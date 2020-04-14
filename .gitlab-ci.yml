@@ -17,10 +17,10 @@ services:
 - docker:19.03.8-dind
 
 variables:
-  RAILS_IMAGE: $GITLAB_REGISTRY_URL/hydrodigit/toptal_time_management_system:0.0.1.$CI_PIPELINE_IID
-#  RAILS_LATEST_IMAGE: $GITLAB_REGISTRY_URL/hydrodigit/toptal_time_management_system:latest
-  PROD_CURRENT: 3pns/toptal_time_management_system:0.0.1.$CI_PIPELINE_IID
-#  PROD_LATEST: 3pns/toptal_time_management_system:latest
+  RAILS_IMAGE: $GITLAB_REGISTRY_URL/hydrodigit/time_management_system:0.0.1.$CI_PIPELINE_IID
+#  RAILS_LATEST_IMAGE: $GITLAB_REGISTRY_URL/hydrodigit/time_management_system:latest
+  PROD_CURRENT: 3pns/time_management_system:0.0.1.$CI_PIPELINE_IID
+#  PROD_LATEST: 3pns/time_management_system:latest
   DEPLOY_TAG: $CI_PIPELINE_IID
   DOCKER_HOST: tcp://docker:2375/
   DOCKER_DRIVER: overlay2
@@ -52,27 +52,6 @@ stages:
   - build
   - test
   - release
-
-prebuild:
-  stage: prebuild
-  tags:
-    - build
-  image: ruby:2.6.6-alpine3.11
-  before_script:
-  - ls -al
-  - du -sh *
-  - whoami
-  - touch .env
-  - bundle -v
-  script:
-    - apk update
-    - apk add -qq && apk add alpine-sdk build-base libxml2-dev libxml2-dev postgresql-dev nodejs yarn tzdata libcurl
-    - gem install bundler
-    - bundle install --jobs $(nproc)
-    - bundle clean --force 
-  only:
-    - master
-    - tags
 
 build:
   stage: build

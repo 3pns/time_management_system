@@ -20,7 +20,7 @@ require "active_model_serializers"
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
-module ToptalTimeManagementSystem
+module TimeManagementSystem
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.0

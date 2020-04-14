@@ -6,7 +6,7 @@ Same as usual
 
 ## front end React SPA
 
-root folder located in toptal_time_management_system_spa
+root folder located in time_management_system_spa
 
 ## Folder structure
 This project is organized by file types. While less common than grouping by features it is
