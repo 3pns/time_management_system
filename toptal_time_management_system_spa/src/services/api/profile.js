@@ -18,6 +18,10 @@ class Profile {
     return ApiDelete( BaseUrl + "/users/sign_out", data)
   };
 
+  static renew = async (payload) => {
+    return ApiPost( BaseUrl + "/user/renew", {}, true)
+  };
+
   static get = async (payload) => {
     return ApiGet( BaseUrl + "/user/profile")
   };

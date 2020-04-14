@@ -8,6 +8,7 @@ import './App.scss';
 import { Layout } from 'containers';
 import actions from 'actions';
 import store from 'store'
+import * as authWorker from './authWorker'; 
 
 const loading = () => <div className="animated fadeIn pt-3 text-center">Loading...</div>;
 
@@ -38,6 +39,16 @@ class App extends Component {
       }
       store.dispatch({type: actions.profile.types.GET, payload: {}});
     }
+  }
+
+  startedAuthWorker = false
+
+  componentDidMount() {
+    if(!this.startedAuthWorker){
+    authWorker.start()
+    this.startedAuthWorker = true
+  }
+
   }
 
   render() {

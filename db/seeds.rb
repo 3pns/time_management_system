@@ -43,7 +43,7 @@ if populate_dummy_data
   )
   user.roles << admin_role rescue ActiveRecord::RecordNotUnique
 
-  (1..10).each do |x|
+  (1..200).each do |x|
     user = User.find_or_initialize_by(email: "user#{x}@example.com")
     user.update_attributes(
       first_name: "user#{x}_first_name", 
@@ -52,10 +52,10 @@ if populate_dummy_data
       password_confirmation: 'monkey123'
     )
     user.roles << user_role rescue ActiveRecord::RecordNotUnique
-    (1..10).each do |y|
-      date = rand(Date.civil(2020, 1, 1)..Date.civil(2020, 1, 31)).to_s
+    (1..100).each do |y|
+      date = rand(Date.civil(2020, 1, 1)..Date.civil(2020, 5, 31)).to_s
       hours = rand(0..10000)
-      TimeEntry.create(user: user, date: date, duration: hours, note: "note #{y}" )
+      TimeEntry.create(user: user, date: date, duration: hours, note: "note #{y}" ) rescue Exception
     end
   end
 end

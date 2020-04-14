@@ -25,6 +25,10 @@ class Profile {
     yield put({type: actions.profile.types.UPDATE, payload: { profile: {authenticated: false}} });
   }
 
+  static * renew(action) {
+    yield call(api.profile.renew, action.payload );
+  }
+
   static * get(action) {
      try { 
         const profile = yield call(api.profile.get);

@@ -7,6 +7,7 @@ function* mySaga() {
   // yield takeEvery(actions.profile.types.CREATE, sagas.profile.create)
   yield takeEvery(actions.profile.types.LOGIN, sagas.profile.login)
   yield takeEvery(actions.profile.types.LOGOUT, sagas.profile.logout)
+  yield takeEvery(actions.profile.types.RENEW, sagas.profile.renew) 
   yield takeEvery(actions.profile.types.GET, sagas.profile.get)
   yield takeEvery(actions.profile.types.PATCH, sagas.profile.patch)
   yield takeEvery(actions.profile.types.PATCH_NEW_PASSWORD, sagas.profile.patchNewPassword)

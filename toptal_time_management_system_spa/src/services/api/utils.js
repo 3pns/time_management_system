@@ -45,7 +45,6 @@ const apiRequest = async (verb, url, jsonData = {}, updateJwt=false) => {
       // throw error if No Content or incorrect json
       data = await response.json();
     } catch (e) {
-      console.log(e)
     }
     // Unauthorized
     if (`${response.status}` === "401" ) {

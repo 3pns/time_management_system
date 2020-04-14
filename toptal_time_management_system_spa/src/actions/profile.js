@@ -6,6 +6,7 @@ Profile.types = {}
 Profile.types.CREATE = 'CREATE_PROFILE';
 Profile.types.LOGIN = 'LOGIN';
 Profile.types.LOGOUT = 'LOGOUT';
+Profile.types.RENEW = 'RENEW_TOKEN';
 Profile.types.PATCH = 'PATCH_PROFILE';
 Profile.types.GET = 'GET_PROFILE';
 Profile.types.PATCH = 'PATCH_PROFILE';
