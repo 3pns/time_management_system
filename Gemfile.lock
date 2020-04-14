@@ -237,6 +237,8 @@ GEM
     timeliness (0.4.4)
     tzinfo (1.2.7)
       thread_safe (~> 0.1)
+    tzinfo-data (1.2019.3)
+      tzinfo (>= 1.0.0)
     validates_timeliness (4.1.1)
       timeliness (>= 0.3.10, < 1)
     warden (1.2.8)
@@ -280,6 +282,7 @@ DEPENDENCIES
   shoulda
   shoulda-matchers
   simplecov
+  tzinfo-data
   validates_timeliness
 
 RUBY VERSION
