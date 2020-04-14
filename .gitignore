@@ -20,6 +20,7 @@
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
+/config/credentials.yml.enc
 
 # General
 .DS_Store
@@ -51,3 +52,4 @@ Temporary Items
 # project specific
 coverage/
 .env
+config

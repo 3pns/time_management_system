@@ -27,13 +27,11 @@ https://reactjs.org/docs/faq-structure.html
 
 # Code Conventions
 
-DRY
+https://github.com/rubocop-hq/ruby-style-guide
 
 ## successful queries
 
-POST/PUT/PATCH : must return the updated 
-serialized
- object
+POST/PUT/PATCH : must return the updated serialized object
 
 ## queries with errors
 

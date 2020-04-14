@@ -84,7 +84,9 @@ class TimeEntry extends Component {
       time_entry.duration = newDuration
     }
     if(obj.updated.note != null || obj.updated.duration != null){
-      store.dispatch({ type: actions.time_entries.types.PATCH , payload: {data:time_entry, id:time_entry.id }  })
+      console.log(this.state)
+      console.log(this.props)
+      store.dispatch({ type: actions.time_entries.types.PATCH , payload: {data: {time_entry: time_entry}, id:time_entry.id }  })
     }
   };
 

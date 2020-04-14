@@ -41,13 +41,13 @@ class BootstrapReduxModal extends Component {
   render() {
     return (
       <Modal isOpen={!this.state.hidden} toggle={this.toggleModal}
-             className={'modal-danger ' + this.state.color}>
+             className={'modal-' + this.state.color}>
         <ModalHeader toggle={this.toggleModal}>Confirmation</ModalHeader>
         <ModalBody>
           {this.state.description}
         </ModalBody>
         <ModalFooter>
-          <Button color="danger" onClick={this.onConfirm}>Confirm</Button>{' '}
+          <Button color={this.state.color} onClick={this.onConfirm}>Confirm</Button>{' '}
           <Button color="secondary" onClick={this.toggleModal}>Cancel</Button>
         </ModalFooter>
       </Modal>

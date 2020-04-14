@@ -51,7 +51,7 @@ class TimeEntryForm extends Component {
         setSubmitting(false);
       }
     }, 1000);
-    store.dispatch({type: actions.time_entries.types.CREATE, payload: { data: time_entry } });
+    store.dispatch({type: actions.time_entries.types.CREATE, payload: { data: {time_entry: time_entry} } });
   }
   state = {
     date: moment(),

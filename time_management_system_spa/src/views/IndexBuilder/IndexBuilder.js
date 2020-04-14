@@ -17,6 +17,9 @@ class IndexBuilder extends Component {
   }
 
   ActionsCells = (obj) => {
+    if(this.props.hideActions){
+      return <React.Fragment></React.Fragment>
+    } else {
     return (
       <div >
         {
@@ -41,7 +44,7 @@ class IndexBuilder extends Component {
           <Button className="btn btn-danger" onClick={() => {this.deleteUserModal(obj.id)}}>Delete</Button>
         }
       </div>
-    )
+    )}
   }
 
   onSort = (column, sortDirection, event) => {
@@ -85,13 +88,14 @@ class IndexBuilder extends Component {
 
   render() {
     let columns = this.props.columns
+    if(!this.props.hideActions){
     columns.push({
       name: 'Actions',
       selector: 'last_name',
       sortable: false,
       minWidth: '220px',
       cell: this.ActionsCells
-    })
+    })}
     return (  
       <DataTable
         title=""

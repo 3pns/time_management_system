@@ -108,8 +108,26 @@ class TimeEntries extends Component {
   }
 
   onUserSearchRefresh = (userId, newValue) => {
-    this.state.selectedUserId = userId
-    this.refresh()
+    if(userId > 0){
+      this.state.selectedUserId = userId
+      this.refresh()
+    }
+
+  }
+
+  onExportButtonClick = () => {
+    if(moment.isMoment(this.state.startDate) && moment.isMoment(this.state.endDate) ){
+      exportReportToHtml(this.props.aggregated_time_entries, this.props.profile, this.state.startDate, this.state.endDate)
+    } else { 
+      let modalConfig = {
+        hidden: false,
+        color: "info",
+        description: "Please select a start date and end date before exporting the document.",
+        currentActionType: null,
+        currentActionparams: null
+      }
+      store.dispatch({ type: SHOW_BOOTSTRAP_REDUX_MODAL , payload: modalConfig  })
+    }
   }
 
   render() {
@@ -171,7 +189,7 @@ class TimeEntries extends Component {
               <h2>Time Entries</h2>
             </div>
             <div className="col-md-4 float-right">
-              <Button color="primary" className="float-right" onClick={() => exportReportToHtml(this.props.aggregated_time_entries, this.props.profile, this.state.startDate, this.state.endDate)}>
+              <Button color="primary" className="float-right" onClick={this.onExportButtonClick}>
                 <i className="fa fa-download" aria-hidden="true"> HTML Export</i>
               </Button>
             </div>

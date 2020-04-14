@@ -62,10 +62,6 @@ class Invitations extends Component {
 
   render() {
     let isAdmin = has_role("admin")
-    let hideEditButton = true
-    let hideViewButton = true
-    let hideDeleteButton = false
-    console.log(this.props)
 
     return (
       <Card>
@@ -88,9 +84,7 @@ class Invitations extends Component {
               deleteAction={actions.invitations.types.DELETE}
               onRefresh={this.onRefresh}
               resourceBasePath={'/invitations'}
-              hideViewButton={hideViewButton}
-              hideEditButton={hideEditButton}
-              hideDeleteButton={hideDeleteButton}
+              hideActions={!has_role("admin")}
             />
           </div>
         </CardBody>

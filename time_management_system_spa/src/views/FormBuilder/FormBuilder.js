@@ -10,12 +10,11 @@ import {
   Row,
   FormFeedback,
   Input,
-  InputGroup,
-  Label,
-  FormGroup
+  FormGroup,
+  Label
 } from 'reactstrap';
 import Select from 'react-select';
-import { Spinner } from 'views'
+
 class FormBuilder extends Component {
   mounted = true
 

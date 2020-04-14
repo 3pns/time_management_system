@@ -19,9 +19,13 @@ class DurationEditor extends React.Component {
 
   componentDidMount(){
     this.inputHourRef.focus();
+    console.log("DIDMOUNY")
+    console.log(this.props)
     let seconds = this.props.value
     let hours = Math.floor(parseInt(this.props.value) / 3600)
     let minutes = Math.floor((parseInt(this.props.value) - (3600 * hours)) / 60)
+    console.log(hours)
+    console.log(minutes)
     if(isNaN(hours)){
       hours = 0
     }
@@ -142,6 +146,9 @@ class DurationEditor extends React.Component {
   }
 
   render() {
+    console.log("INIT STATE")
+    console.log(this.state)
+    console.log(this.props)
     return (
       <div className="form-inline">
         <span 
