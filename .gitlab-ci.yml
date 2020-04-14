@@ -17,7 +17,7 @@ services:
 - docker:19.03.8-dind
 
 variables:
-  RAILS_IMAGE: $GITLAB_REGISTRY_URL/hydrodigit/time_management_system:0.0.1.$CI_PIPELINE_IID
+  RAILS_IMAGE: $GITLAB_REGISTRY_URL/3pns/time_management_system:0.0.1.$CI_PIPELINE_IID
 #  RAILS_LATEST_IMAGE: $GITLAB_REGISTRY_URL/hydrodigit/time_management_system:latest
   PROD_CURRENT: 3pns/time_management_system:0.0.1.$CI_PIPELINE_IID
 #  PROD_LATEST: 3pns/time_management_system:latest
