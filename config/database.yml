@@ -1,7 +1,9 @@
 default: &default
   adapter: postgresql
   encoding: unicode
-  username: <%= ENV['USER'] %>
+  host: <%= ENV['POSTGRES_HOST'] %>
+  username: <%= ENV['POSTGRES_USER'] %>
+  password: <%= ENV['POSTGRES_PASSWORD'] %>
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
 development:
@@ -15,16 +17,10 @@ test:
 staging:
   <<: *default
   database: time_management_system_staging
-  host: <%= ENV['POSTGRES_HOST'] %>
-  username: <%= ENV['POSTGRES_USER'] %>
-  password: <%= ENV['POSTGRES_PASSWORD'] %>
   sslmode: "require"
 
 production:
   <<: *default
   database: time_management_system_production
-  host: <%= ENV['POSTGRES_HOST'] %>
-  username: <%= ENV['POSTGRES_USER'] %>
-  password: <%= ENV['POSTGRES_PASSWORD'] %>
   sslmode: "require"
 
