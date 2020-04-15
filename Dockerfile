@@ -6,7 +6,7 @@ ENV RAILS_SERVE_STATIC_FILES true
 ENV BUNDLE_APP_CONFIG vendor/bundle
 ENV BUNDLE_PATH vendor/bundle
 ENV GEM_HOME vendor/bundle
-ENV PATH="/opt/time_management_system/vendor/bundle/bin:${PATH}"
+ENV PATH="/opt/time_management_system/vendor/bundle/ruby/2.6.0/bin:${PATH}"
 RUN apk update
 RUN apk add --no-cache libxml2-dev libxslt-dev postgresql-dev nodejs libcurl 
 RUN apk add build-base
