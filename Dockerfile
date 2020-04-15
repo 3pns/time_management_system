@@ -13,7 +13,7 @@ RUN apk add build-base
 RUN gem install bundler
 COPY Gemfile Gemfile
 COPY Gemfile.lock Gemfile.lock
-RUN bundle install --jobs $(nproc)
+RUN bundle install --jobs $(nproc) --path vendor/bundle
 COPY . .
 EXPOSE 3000
 CMD ["rails", "server", "-b", "127.0.0.1"]
