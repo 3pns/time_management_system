@@ -1,4 +1,5 @@
 class User::InvitationsController < User::UserController
+  before_action :find_invitation, :only => [:show, :update, :destroy]
 
   def index
     @q = policy_scope(Invitation.includes(:invited_by))
@@ -51,7 +52,6 @@ class User::InvitationsController < User::UserController
 
   private
     def model_params
-      p params
       return params.require(:invitation).permit(:email, { roles:[] }, :invite_as_subordinate)
     end 
 

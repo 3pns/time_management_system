@@ -15,8 +15,10 @@ class User::UserSettingsController < User::UserController
 
   private
     def model_params
-      params[:user_setting] = params[:user_setting].except(:user_id) if params[:action] == "update"
-      params[:user_setting] = params[:user_setting].except(:id)
+      if params[:user_setting]
+        params[:user_setting] = params[:user_setting].except(:user_id) if params[:action] == "update"
+        params[:user_setting] = params[:user_setting].except(:id)
+      end
       return params.require(:user_setting).permit!
 
     end 

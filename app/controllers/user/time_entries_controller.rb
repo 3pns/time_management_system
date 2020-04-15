@@ -51,8 +51,10 @@ class User::TimeEntriesController < User::UserController
 
   private
     def model_params
-      params[:time_entry] = params[:time_entry].except(:id)
-      params[:time_entry] = params[:time_entry].except(:user_id) if params[:action] == "update"
+      if params[:time_entry]
+        params[:time_entry] = params[:time_entry].except(:id)
+        params[:time_entry] = params[:time_entry].except(:user_id) if params[:action] == "update"
+      end
       params.require(:time_entry).permit!
     end
 
