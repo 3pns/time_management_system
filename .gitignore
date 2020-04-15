@@ -53,3 +53,5 @@ Temporary Items
 coverage/
 .env
 config
+
+vendor/

@@ -55,9 +55,9 @@ class App extends Component {
     let isAuthenticated = localStorage.getItem('access-token') ? true : false
     console.log(this.props.location.pathname)
     if(!isAuthenticated && !anonymous_user_allowed_paths.includes(this.props.location.pathname)) {
-      return <Redirect to='/login' />
+      return <Redirect to='login' />
     } else if (isAuthenticated && anonymous_user_allowed_paths.includes(this.props.location.pathname) ){
-      return <Redirect to='/dashboard' />
+      return <Redirect to='dashboard' />
     }
     return (
         <React.Suspense fallback={loading()}>
