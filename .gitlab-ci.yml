@@ -55,19 +55,6 @@ stages:
   - test
   - release
 
-build_api:
-  stage: build
-  tags:
-    - build
-  script:
-#    - docker pull $RAILS_LATEST_IMAGE
-#    - docker build --cache-from $RAILS_LATEST_IMAGE -t $RAILS_IMAGE .
-    - docker build -t $RAILS_IMAGE .
-    - docker push $RAILS_IMAGE
-  only:
-    - master
-    - tags
-
 build_front:
   stage: build
   tags:
@@ -81,6 +68,21 @@ build_front:
   only:
     - master
     - tags
+
+build_api:
+  stage: build
+  tags:
+    - build
+  script:
+#    - docker pull $RAILS_LATEST_IMAGE
+#    - docker build --cache-from $RAILS_LATEST_IMAGE -t $RAILS_IMAGE .
+    - docker build -t $RAILS_IMAGE .
+    - docker push $RAILS_IMAGE
+  only:
+    - master
+    - tags
+
+
 
 test:
   stage: test
