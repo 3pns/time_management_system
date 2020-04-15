@@ -76,7 +76,7 @@ build_front:
 #    - docker pull $RAILS_LATEST_IMAGE
 #    - docker build --cache-from $RAILS_LATEST_IMAGE -t $RAILS_IMAGE .
     - cd time_management_system_spa
-    - docker build --build-arg REACT_APP_API_BASE_URL=${REACT_APP_API_BASE_URL} REACT_APP_RECAPTCHA_SITE_KEY=${REACT_APP_RECAPTCHA_SITE_KEY} REACT_APP_TOKEN_RENEWAL_DELAY=${REACT_APP_TOKEN_RENEWAL_DELAY} -t $SPA_IMAGE . 
+    - docker build --build-arg REACT_APP_API_BASE_URL=${REACT_APP_API_BASE_URL} --build-arg REACT_APP_RECAPTCHA_SITE_KEY=${REACT_APP_RECAPTCHA_SITE_KEY} --build-arg REACT_APP_TOKEN_RENEWAL_DELAY=${REACT_APP_TOKEN_RENEWAL_DELAY} -t $SPA_IMAGE . 
     - docker push $SPA_IMAGE
   only:
     - master
