@@ -85,6 +85,8 @@ class Invitations extends Component {
               onRefresh={this.onRefresh}
               resourceBasePath={'/invitations'}
               hideActions={!has_role("admin")}
+              hideViewButton={true}
+              hideEditButton={true}
             />
           </div>
         </CardBody>

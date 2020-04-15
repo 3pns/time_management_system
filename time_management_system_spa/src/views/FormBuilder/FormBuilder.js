@@ -157,7 +157,7 @@ class FormBuilder extends Component {
                       tag={Field}
                       invalid={ this.containEntity(errors, field.name) && this.containEntity(touched, field.name)}
                       isMulti={field.multiple ? true : false}
-                      isClearable
+                      
                     />
                   <FormFeedback>{ this.parseErrorsToString(errors, field) }</FormFeedback>
                 </FormGroup>

@@ -20,7 +20,6 @@ class Users {
 
   static * all(action) {
      try { 
-        console.log(action)
         const users = yield call(api.users.all, action.payload);
         if (users != null){
           yield put({type: actions.users.types.UPDATE_COLLECTION, payload: { users: users }});
@@ -32,11 +31,8 @@ class Users {
 
   static * create(action) {
      try { 
-        console.log("ERRORS INBEFORE")
         let user = yield call(api.users.create, action.payload);
-        console.log(user)
         if (user.errors){
-          console.log("ERRORS DTCED")
           yield put({type: actions.users.types.UPDATE_ERRORS, payload: { errors: user.errors }});
           user = null
         }

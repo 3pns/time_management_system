@@ -109,6 +109,7 @@ class TimeEntries extends Component {
 
   onUserSearchRefresh = (userId, newValue) => {
     if(userId > 0){
+      store.dispatch({type: actions.users.types.GET, payload: {id: userId, updateItem: true}});
       this.state.selectedUserId = userId
       this.refresh()
     }
@@ -259,6 +260,7 @@ const mapStateToProps = state => {
   if(state.time_entries != null && state.time_entries.aggregated_time_entries != null){
     aggregated_time_entries = Object.values(state.time_entries.aggregated_time_entries)
   }
-  return {profile: state.profile, time_entries: time_entries, aggregated_time_entries: aggregated_time_entries, users: state.users, user: state.user}
+  console.log(state)
+  return {profile: state.profile, time_entries: time_entries, aggregated_time_entries: aggregated_time_entries, users: state.users, user: state.users.user}
 }
 export default withRouter(connect(mapStateToProps)(TimeEntries));

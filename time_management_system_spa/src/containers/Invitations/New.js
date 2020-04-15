@@ -16,6 +16,9 @@ import { has_role } from 'services/utils'
 class New extends Component {
 
   onDispatch(values){
+    console.log(values)
+    console.log(this.state)
+    console.log(this.props)
     store.dispatch({type: actions.invitations.types.CREATE, payload: { data: { invitation: values} } });
   }
 
@@ -54,15 +57,18 @@ class New extends Component {
   ]
 
   render() {
-    if(has_role("admin"))
-    this.fields.push({
-      label: "Roles",
-      name: "roles",
-      inputType: "select",
-      multiple: true,
-      delayInitialValues: true,
-      choices: this.props.roles
-    })
+    let fields = JSON.parse(JSON.stringify(this.fields))
+    if(has_role("admin")){
+      fields.push({
+        label: "Roles",
+        name: "roles",
+        inputType: "select",
+        multiple: true,
+        delayInitialValues: true,
+        choices: this.props.roles
+      })
+    }
+
     console.log(this.props)
     return (
       <Card>
@@ -90,7 +96,7 @@ class New extends Component {
                   submitButtonText= "Create"
                   returnButtonText= "Return"
                   returnButtonTo= "/invitations"
-                  fields={this.fields}
+                  fields={fields}
                   errors={this.props.errors}
                   onDispatch={this.onDispatch}
                 />
@@ -104,7 +110,7 @@ class New extends Component {
 }
 
 const mapStateToProps = state => {
-  let roles = [
+  const roles = [
     { value: "user", label: "User" },
     { value: "manager", label: "Manager" },
     { value: "admin", label: "Admin" }

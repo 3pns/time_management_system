@@ -4,7 +4,6 @@ import { updateCollection } from './utils'
 export const users = (state = {users: [], user: {}, pagination: [], errors: {}}, action) => {
   switch (action.type) {
     case actions.users.types.UPDATE_ITEM:
-      var {id, collection} = action.payload
       state.user = action.payload.user
       return { ...state }
     case actions.users.types.UPDATE_COLLECTION_WITH_ITEM:
