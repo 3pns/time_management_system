@@ -4,6 +4,6 @@ class ApplicationController < ActionController::API
   include Pundit
   
   respond_to :json
-  responder :my_application
+  # responder :my_application
 
 end
