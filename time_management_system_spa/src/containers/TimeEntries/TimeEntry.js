@@ -94,7 +94,9 @@ class TimeEntry extends Component {
   componentDidMount() {
     // fix react data table element that is not configurable
     let theBadOne = document.getElementsByClassName('jEDPQU')[0]
-    theBadOne.style.cssText = "width: 100% !important; display: flex !important;"; 
+    if(theBadOne){
+      theBadOne.style.cssText = "width: 100% !important; display: flex !important;"; 
+    }
   }
 
 
