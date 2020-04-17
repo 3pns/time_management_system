@@ -11,4 +11,4 @@ COPY Gemfile.lock Gemfile.lock
 RUN bundle install --jobs $(nproc)
 COPY . .
 EXPOSE 3000
-CMD ["rails", "server", "-b", "127.0.0.1"]
+CMD ["puma", "-C", "config/puma.rb"]
