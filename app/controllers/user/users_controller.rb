@@ -2,7 +2,7 @@ class User::UsersController < ApplicationController
   before_action :find_user, :only => [:show, :edit, :update, :destroy]
 
   def index
-    @q = policy_scope(User)#.ransack(params[:q])
+    @q = policy_scope(User)
     @q = @q.search_by_fields(params[:search_by_fields]) if params[:search_by_fields]
     @q = @q.ransack(params[:q])
     @pagy, @users = pagy(@q.result)

@@ -21,6 +21,7 @@ class User::TimeEntriesController < User::UserController
 
   def create
     @time_entry = TimeEntry.new model_params
+    @time_entry.user_id = current_user.id if !current_user.has_role?("admin")
     if @time_entry.save
       render json: @time_entry, status: 201
     else

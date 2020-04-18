@@ -15,11 +15,8 @@ class User::InvitationsController < User::UserController
   def create
     @invitation = Invitation.new model_params
     @invitation.invited_by = current_user
-    p @invitation
-    p params
     if @invitation.save
       @invitation.reload
-      p @invitation
       render json: @invitation, serializer: InvitationSerializer, status: 201
       InvitationMailer.with(invitation_id: @invitation.id).new_invitation_email.deliver_later
     else
