@@ -216,6 +216,8 @@ const mapStateToProps = state => {
     { value: "admin", label: "Admin" }
   ]
 
+  console.log(state)
+
   return {profile: state.profile, user: state.users.user, users: state.users.users, errors: state.users.errors, roles: roles}
 }
 export default withRouter(connect(mapStateToProps)(Edit));

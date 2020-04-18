@@ -42,20 +42,21 @@ class FormBuilder extends Component {
   }
 
   onSubmit = (values, { setSubmitting, errors, setErrors }) => {
-
+    // deep copies values, directly modifying values will break formik interna state
+    let parsedValues = JSON.parse(JSON.stringify(values))
     // serialize all multi forms values to array of data
     this.props.fields.map((field) => {
       // multi select
-      if(field.inputType == "select" && field.multiple && values[field.name]){
-        values[field.name] = values[field.name].map((pair) => {
+      if(field.inputType == "select" && field.multiple && parsedValues[field.name]){
+        parsedValues[field.name] = parsedValues[field.name].map((pair) => {
           if(pair){
             return pair.value
           }
         })
       // standard select
       } else if (field.inputType == "select"){
-        if(values[field.name]){
-          values[field.name] = values[field.name].value
+        if(parsedValues[field.name]){
+          parsedValues[field.name] = parsedValues[field.name].value
         }
         
       }
@@ -66,7 +67,7 @@ class FormBuilder extends Component {
         setSubmitting(false);
       }
     }, 2000);
-    this.props.onDispatch(values)
+    this.props.onDispatch(parsedValues)
   }
 
   onSelectChange = (field, option, setFieldValue) => {

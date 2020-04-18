@@ -16,9 +16,6 @@ import { has_role } from 'services/utils'
 class New extends Component {
 
   onDispatch(values){
-    console.log(values)
-    console.log(this.state)
-    console.log(this.props)
     store.dispatch({type: actions.invitations.types.CREATE, payload: { data: { invitation: values} } });
   }
 
@@ -120,6 +117,8 @@ const mapStateToProps = state => {
     invite_as_subordinate: '',
     roles: []
   }
+
+  console.log(state)
   return { profile: state.profile, invitation: invitation, errors: state.invitations.errors, roles: roles }
 }
 export default withRouter(connect(mapStateToProps)(New));

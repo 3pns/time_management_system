@@ -76,19 +76,17 @@ class Invitations extends Component {
           </div>
         </CardHeader>
         <CardBody>
-          <div id="times-entries-parent-holder">
-            <IndexBuilder
-              columns={this.columns}
-              data={this.props.invitations.invitations}
-              pagination={this.props.invitations.pagination}
-              deleteAction={actions.invitations.types.DELETE}
-              onRefresh={this.onRefresh}
-              resourceBasePath={'/invitations'}
-              hideActions={!has_role("admin")}
-              hideViewButton={true}
-              hideEditButton={true}
-            />
-          </div>
+          <IndexBuilder
+            columns={this.columns}
+            data={this.props.invitations.invitations}
+            pagination={this.props.invitations.pagination}
+            deleteAction={actions.invitations.types.DELETE}
+            onRefresh={this.onRefresh}
+            resourceBasePath={'/invitations'}
+            hideActions={!has_role("admin")}
+            hideViewButton={true}
+            hideEditButton={true}
+          />
         </CardBody>
       </Card>
     )
