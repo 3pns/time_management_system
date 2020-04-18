@@ -91,15 +91,6 @@ class TimeEntry extends Component {
     }
   };
 
-  componentDidMount() {
-    // fix react data table element that is not configurable
-    let theBadOne = document.getElementsByClassName('jEDPQU')[0]
-    if(theBadOne){
-      theBadOne.style.cssText = "width: 100% !important; display: flex !important;"; 
-    }
-  }
-
-
   render() {
     let rows = []
     if(this.props.data.time_entries != null){
