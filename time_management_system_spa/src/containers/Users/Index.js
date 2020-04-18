@@ -81,18 +81,16 @@ class Users extends Component {
           </div>
         </CardHeader>
         <CardBody>
-          <div id="times-entries-parent-holder">
-            <IndexBuilder
-              columns={this.columns}
-              data={this.props.users.users}
-              pagination={this.props.users.pagination}
-              deleteAction={actions.users.types.DELETE}
-              onRefresh={this.onRefresh}
-              resourceBasePath={'/users'}
-              hideEditButton={hideEditButton}
-              hideDeleteButton={hideDeleteButton}
-            />
-          </div>
+          <IndexBuilder
+            columns={this.columns}
+            data={this.props.users.users}
+            pagination={this.props.users.pagination}
+            deleteAction={actions.users.types.DELETE}
+            onRefresh={this.onRefresh}
+            resourceBasePath={'/users'}
+            hideEditButton={hideEditButton}
+            hideDeleteButton={hideDeleteButton}
+          />
         </CardBody>
       </Card>
     )
