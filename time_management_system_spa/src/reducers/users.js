@@ -1,5 +1,6 @@
 import actions from 'actions';
 import { updateCollection } from './utils'
+import moment from 'moment'
 
 export const users = (state = {users: [], user: {}, pagination: [], errors: {}}, action) => {
   switch (action.type) {

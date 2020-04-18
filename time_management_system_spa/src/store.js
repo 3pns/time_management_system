@@ -1,6 +1,6 @@
 import { combineReducers, createStore, applyMiddleware } from 'redux';
 //import { Provider } from 'react-redux';
-import { profile, users, time_entries, invitations } from 'reducers';
+import { profile, users, time_entries, invitations, app } from 'reducers';
 import BootstrapReduxAlert from 'components/BootstrapReduxAlert/reducers'
 import BootstrapReduxModal from 'components/BootstrapReduxModal/reducers'
 
@@ -17,7 +17,8 @@ export const store = createStore(
     profile,
     users,
     time_entries,
-    invitations
+    invitations,
+    app
   //  someOtherReducer 
   }),
   applyMiddleware(sagaMiddleware)

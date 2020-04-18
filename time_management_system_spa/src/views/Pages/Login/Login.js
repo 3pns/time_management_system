@@ -7,6 +7,7 @@ import BootstrapReduxAlert from 'components/BootstrapReduxAlert'
 import actions from 'actions';
 import api from 'services/api';
 import store from 'store'
+import { ToastContainer, toast } from 'react-toastify';
 
 class Login extends Component {
   mounted = true;
@@ -42,6 +43,17 @@ class Login extends Component {
     return (
       <div className="app flex-row align-items-center">
         <Container>
+          <ToastContainer
+            position="bottom-right"
+            autoClose={5000}
+            hideProgressBar
+            newestOnTop
+            closeOnClick={false}
+            rtl
+            pauseOnVisibilityChange
+            draggable={false}
+            pauseOnHover
+           />
           <Row className="justify-content-center">
             <Col md="8">
               <CardGroup>

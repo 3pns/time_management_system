@@ -2,10 +2,6 @@ import store from 'store'
 import actions from 'actions'
 import { toast } from 'services/utils'
 
-function objectToStringParams(key, obj){
-
-}
-
 const apiRequest = async (verb, url, jsonData = {}, updateJwt=false) => {
   try {
     var request = {
@@ -80,11 +76,7 @@ const apiRequest = async (verb, url, jsonData = {}, updateJwt=false) => {
       return data;
     }
   } catch (e) {
-    if(e.toString().includes("Failed to fetch")){
-      toast('error', "Can't connect to the backend server, please check your internet connection. If this problem persist please try again later.")
-    } else {
-      toast('error', `Fatal error while connecting to the backend server : ${e.toString()}. If the problem persist please contact the developer.`)
-    }
+    store.dispatch({type: actions.app.types.PROCESS_CRITICAL_ERROR, payload: {message: e.toString()} });
   }
 }
 
